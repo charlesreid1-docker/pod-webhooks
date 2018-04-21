@@ -1,0 +1,25 @@
+version: "3.1"
+services:
+
+  stormy_nginx_subs:
+    restart: always
+    image: nginx
+    command: /bin/bash -c "nginx -g 'daemon off;'"
+    volumes:
+      - "d-nginx-subdomains/conf.d:/etc/nginx/conf.d"
+      - "stormy_webhooks_data:/www"
+    ports:
+      - "7777:7777"
+      - "7778:7778"
+      - "7779:7779"
+
+  stormy_captain_hook:
+    build: .
+    stdin_open: true
+    ports:
+      - "5000:5000"
+    volumes:
+      - "stormy_webhooks_data:/www"
+
+volumes:
+  stormy_webhooks_data:
