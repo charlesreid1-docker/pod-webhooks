@@ -2,24 +2,10 @@ import subprocess
 import os
 from static_domains import onepagers
 
-if(os.geteuid()==0):
-    print(" ")
-    print(" ")
-    print("ERROR: This script should not be run as root.")
-    print(" ")
-    print(" ")
-    exit(1)
-
 
 if( os.path.isdir('/www') is False ):
-    print(" ")
-    print(" ")
-    print("ERROR: The /www directory does not exist.")
-    print(" ")
-    print(" ")
-    exit(1)
-
-
+    mkdircmd = ["mkdir","/www"]
+    subprocess.call(mkdircmd)
 
 for name in onepagers:
     url = onepagers[name]
@@ -41,8 +27,6 @@ for name in onepagers:
     print("About to run the command:")
     print("    $ " + " ".join(clonecmd))
     print(" ")
-    response = input('Okay to proceed? (y/n) ')
-    if(response=='y' or response=='Y' or response=='yes'):
-        subprocess.call(mkdircmd)
-        subprocess.call(clonecmd)
+    subprocess.call(mkdircmd)
+    subprocess.call(clonecmd)
 
