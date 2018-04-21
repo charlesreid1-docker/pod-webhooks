@@ -6,7 +6,7 @@ services:
     image: nginx
     command: /bin/bash -c "nginx -g 'daemon off;'"
     volumes:
-      - "d-nginx-subdomains/conf.d:/etc/nginx/conf.d"
+      - "./d-nginx-subdomains/conf.d:/etc/nginx/conf.d"
       - "stormy_webhooks_data:/www"
     ports:
       - "7777:7777"
@@ -14,8 +14,7 @@ services:
       - "7779:7779"
 
   stormy_captain_hook:
-    build: .
-    stdin_open: true
+    build: b-captain-hook
     ports:
       - "5000:5000"
     volumes:
