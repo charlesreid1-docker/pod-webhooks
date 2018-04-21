@@ -19,7 +19,7 @@ for name in onepagers:
         print(" ")
         print(" ")
         print("ERROR: The directories /www/%s/git and /www/%s/htodcs"%(name,name))
-        print(" already exist. Use the static_update.py script instead. ")
+        print(" already exist. Use the pull script instead. ")
         print(" ")
         exit(1)
 
