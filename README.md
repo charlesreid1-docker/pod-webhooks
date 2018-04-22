@@ -1,3 +1,22 @@
+# TEMPORARILY OUT OF SERVICE
+
+4/22/2018
+
+We just got the webhooks server working after a harrowing 
+experience with various incarnations of flask servers
+running in containers. It currently runs as a one-container
+pod, as does the nginx subdomains pod.
+
+Eventually these should be reconciled and this repo should 
+contain a combined dockerfile, but right now I'm reluctant
+to touch it.
+
+The other thing that should be fixed is the fact that 
+we don't want to mount static content inside the container.
+We want to bind-mount the static content into both containers.
+
+
+
 # pod-webhooks
 
 This docker pod runs two services:
