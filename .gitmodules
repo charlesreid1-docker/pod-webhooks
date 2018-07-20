@@ -1,6 +1,6 @@
-[submodule "d-nginx-subdomains"]
-	path = d-nginx-subdomains
-	url = https://git.charlesreid1.com/docker/d-nginx-subdomains.git
 [submodule "b-captain-hook"]
 	path = b-captain-hook
 	url = https://git.charlesreid1.com/bots/b-captain-hook.git
+[submodule "d-nginx-subdomains"]
+	path = d-nginx-subdomains
+	url = https://git.charlesreid1.com/docker/d-nginx-subdomains.git
