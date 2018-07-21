@@ -20,9 +20,9 @@ services:
     ports:
       - "5000:5000"
     volumes:
-      - "/www/pages.charlesreid1.com/htdocs:/www/pages.charlesreid1.com/htdocs:ro"
-      - "/www/hooks.charlesreid1.com/htdocs:/www/hooks.charlesreid1.com/htdocs:ro"
-      - "/www/bots.charlesreid1.com/htdocs:/www/bots.charlesreid1.com/htdocs:ro"
+      - "/www/pages.charlesreid1.com/htdocs:/www/pages.charlesreid1.com/htdocs"
+      - "/www/hooks.charlesreid1.com/htdocs:/www/hooks.charlesreid1.com/htdocs"
+      - "/www/bots.charlesreid1.com/htdocs:/www/bots.charlesreid1.com/htdocs"
       - "/tmp/triggers:/tmp/triggers"
       - "./b-captain-hook/hooks:/app/hooks"
 
