@@ -7,7 +7,9 @@ services:
     command: /bin/bash -c "nginx -g 'daemon off;'"
     volumes:
       - "./d-nginx-subdomains/conf.d:/etc/nginx/conf.d"
-      - "stormy_webhooks_data:/www"
+      - "/www/pages.charlesreid1.com/htdocs:/www/pages.charlesreid1.com/htdocs:ro"
+      - "/www/hooks.charlesreid1.com/htdocs:/www/hooks.charlesreid1.com/htdocs:ro"
+      - "/www/bots.charlesreid1.com/htdocs:/www/bots.charlesreid1.com/htdocs:ro"
     ports:
       - "7777:7777"
       - "7778:7778"
@@ -18,9 +20,9 @@ services:
     ports:
       - "5000:5000"
     volumes:
-      - "stormy_webhooks_data:/www"
+      - "/www/pages.charlesreid1.com/htdocs:/www/pages.charlesreid1.com/htdocs:ro"
+      - "/www/hooks.charlesreid1.com/htdocs:/www/hooks.charlesreid1.com/htdocs:ro"
+      - "/www/bots.charlesreid1.com/htdocs:/www/bots.charlesreid1.com/htdocs:ro"
       - "/tmp/triggers:/tmp/triggers"
       - "./b-captain-hook/hooks:/app/hooks"
 
-volumes:
-  stormy_webhooks_data:
