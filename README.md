@@ -112,7 +112,7 @@ the correct secret or the trigger will be ignored.
 This pod runs on blackbeard.
 
 The nginx service is reverse-proxied HTTP with krash,
-and accessible at ports 7777-7779 and up.
+and accessible at ports 7777+ and up.
 
 The Captain Hook webhook server is also reverse-proxied HTTP.
 The krash nginx server will handle all traffic to 
