@@ -29,6 +29,11 @@ See [Services.md](Services.md) for info about running startup services.
 * Running the Docker Pod as a Startup Service
 * Running Captain Hook's Canary (Script)
 
+```
+sudo systemctl enable dockerpod-webhooks
+sudo systemctl enable captain-hook-canary
+```
+
 See [Captain Hook's Canary (Canary.md)](Canary.md) for details on the canary script that allows the
 webhooks docker pod to trigger itself to be re-loaded when there are new hooks
 added to captain hook.
@@ -75,7 +80,7 @@ detects the file:
 /tmp/triggers/push-b-captain-hook-master
 ```
 
-(it will then remove it.) 
+(The canary script will clean up this file.)
 
 Now a hook can be added to Captain Hook that will be run when there is a push event
 on the master branch of [bots/b-captain-hook](https://git.charlesreid1.com/bots/b-captain-hook).
@@ -91,6 +96,11 @@ Code: <https://git.charlesreid1.com/bots/b-captain-hook/src/branch/master/hooks/
 
 The `d-subodomains-nginx` container opens different ports for different
 subdomains, and reverse-proxies requests from charlesreid1.com.
+The port numbering starts at 7777 for pages.charlesreid1.com
+and goes up from there, one port per subdomain.
+
+Also see [pod-charlesreid1](https://git.charlesreid1.com/docker/pod-charlesreid1)
+on git.charlesreid1.com for the nginx reverse proxy configuration.
 
 Captain Hook runs a Flask server on port 5000 and listens for triggers
 from git.charlesreid1.com (gitea) web hooks. These web hooks must have 
