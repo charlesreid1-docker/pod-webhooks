@@ -29,9 +29,18 @@ See [Services.md](Services.md) for info about running startup services.
 * Running the Docker Pod as a Startup Service
 * Running Captain Hook's Canary (Script)
 
+Enable/disable service (installs/uninstalls, but does not start):
+
 ```
-sudo systemctl enable dockerpod-webhooks
-sudo systemctl enable captain-hook-canary
+sudo systemctl (enable|disable) dockerpod-webhooks.service
+sudo systemctl (enable|disable) captain-hook-canary.service
+```
+
+Start/stop:
+
+```
+sudo systemctl (start|stop) dockerpod-webhooks.service
+sudo systemctl (start|stop) captain-hook-canary.service
 ```
 
 See [Captain Hook's Canary (Canary.md)](Canary.md) for details on the canary script that allows the
@@ -116,7 +125,7 @@ and accessible at ports 7777+ and up.
 
 The Captain Hook webhook server is also reverse-proxied HTTP.
 The krash nginx server will handle all traffic to 
-`https://hooks.charlesreid1.com` except URLs prefixed
+<https://hooks.charlesreid1.com> except URLs prefixed
 with `webhook`, which are forwarded on to Captain Hook
 on port 5000.
 
