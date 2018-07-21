@@ -9,6 +9,14 @@ This docker pod runs two services:
 
  These two services are in this repo as submodules.
 
+## Adding Hooks
+
+Since this is probably the only thing you'll care about once everything
+is actually running... until it breaks.
+
+[How To Add A Hook](/Adding.md)
+
+
 ## How It Works
 
 See [Running.md](/Running.md) for info about running this docker pod.
@@ -19,9 +27,44 @@ See [Running.md](/Running.md) for info about running this docker pod.
 See [Services.md](/Services.md) for info about running startup services.
 
 * Running the Docker Pod as a Startup Service
-* Running Docker-Host Canary Script
+* Running Captain Hook's Canary (Script)
 
-## Volumes
+## Volumes and Files
+
+### Subdomains
+
+The static files hosted on charlesreid1.com subdomains are contained in
+subdirectories of `/www/*.charlesreid1.com/` and this is
+mounted by the subdomains docker container that has rules
+set up for which subdomains to serve.
+
+### Captain Hook
+
+Captain Hook mounts the `/www` folder, which is served by the subdomains
+nginx server, as well as the hooks folder in the Captain Hook repository
+(that's at `b-captain-hook/hooks`).
+
+If hooks are added to Captain Hook, the copy of Captain Hook being hosted
+in the container by the webhook server will still be the old version.
+
+Therefore we use a hook run by Captain Hook, that when changes are pushed
+to the master branch of Captain Hook, it will create a trigger file,
+which will update the Captain Hook git repo to fetch and merge the
+latest changes, then restart the webhooks-subdomains docker pod.
+
+
+## Network
+
+The `d-subodomains-nginx` container opens different ports for different
+subdomains, and reverse-proxies requests from charlesreid1.com.
+
+Captain Hook runs a Flask server on port 5000 and listens for triggers
+from git.charlesreid1.com (gitea) web hooks. These web hooks must have 
+the correct secret or the trigger will be ignored.
+
+
+
+
 
 This docker container needs to share a few folders:
 
