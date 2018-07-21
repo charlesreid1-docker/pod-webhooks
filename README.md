@@ -49,13 +49,22 @@ Captain Hook mounts the `/www` folder, which is served by the subdomains
 nginx server, as well as the hooks folder in the Captain Hook repository
 (that's at `b-captain-hook/hooks`).
 
-If hooks are added to Captain Hook, the copy of Captain Hook being hosted
-in the container by the webhook server will still be the old version.
+When there is a change pushed to a particular branch on git.charlesreid1.com,
+the git.charlesreid1.com server will check if there is a corresponding hook that's
+been added to Captain Hook for that repo and branch. If so, git.charlesreid1.com
+runs that script. For pages.charlesreid1.com, that's usually just a git pull 
+on the contents of `/www/pages.charlesreid1.com/my-page`.
 
-Therefore we use a hook run by Captain Hook, that when changes are pushed
-to the master branch of Captain Hook, it will create a trigger file,
-which will update the Captain Hook git repo to fetch and merge the
-latest changes, then restart the webhooks-subdomains docker pod.
+### Captain Hook's Canary
+
+Captain Hook presents a bit of a paradox: the webhook docker pod needs to be 
+able to tell the host to restart the webhook docker pod when changes are pushed
+to Captain Hook itself.
+
+This is done by Captain Hook's Canary. This is a script that checks every 10 seconds
+for a trigger file in a directory mounted between the host and container. If the 
+trigger file is present, the host will update its copy of Captain Hook,
+then restart the webhooks-subdomains docker pod.
 
 
 ## Network
