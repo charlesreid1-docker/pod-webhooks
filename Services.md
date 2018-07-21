@@ -36,23 +36,51 @@ ExecStop=/usr/local/bin/docker-compose  -f /home/charles/codes/docker/pod-webhoo
 WantedBy=default.target
 ```
 
+**`captain-hook-canary.service:`**
+
+```
+[Unit]
+Description=captain hook canary script
+Requires=dockerpod-captainhook.service
+After=dockerpod-captainhook.service
+
+[Service]
+Restart=always
+ExecStart=/home/charles/blackbeard_scripts/captain_hook_canary.sh
+ExecStop=/usr/bin/pgrep -f captain_hook_canary | /usr/bin/xargs /bin/kill 
+
+[Install]
+WantedBy=default.target
+```
+
 Now install the service to `/etc/systemd/system/dockerpod-webhooks.servce`,
+and/or `/etc/systemd/system/captain-hook-canary.servce`,
 and activate it:
 
 ```
 sudo systemctl enable dockerpod-webhooks.service
+
+sudo systemctl enable captain-hook-canary.service
 ```
 
 Now you can start/stop the service with:
 
 ```
 sudo systemctl (start|stop) dockerpod-webhooks.service
+
+sudo systemctl (start|stop) captain-hook-canary.service
 ```
 
-As mentioned above, stop the serivce with 
-`sudo systemctl stop dockerpod-webhooks.service` before
+As mentioned above, these services should be stopped before
 doing a `docker-compose stop` or a `docker-compose up --build`
 to keep the pod from respawning in the middle of the task.
 
+Stop using:
+
+```
+sudo systemctl stop dockerpod-webhooks.service
+
+sudo systemctl stop captain-hook-canary.service
+```
 
 

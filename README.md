@@ -14,20 +14,25 @@ This docker pod runs two services:
 Since this is probably the only thing you'll care about once everything
 is actually running... until it breaks.
 
-[How To Add A Hook](/Adding.md)
+[How To Add A Hook](Adding.md)
 
 
 ## How It Works
 
-See [Running.md](/Running.md) for info about running this docker pod.
+See [Running.md](Running.md) for info about running this docker pod.
 
 * Running the Docker Pod from Comand Line
 * Workflow for Docker Pod Updates
 
-See [Services.md](/Services.md) for info about running startup services.
+See [Services.md](Services.md) for info about running startup services.
 
 * Running the Docker Pod as a Startup Service
 * Running Captain Hook's Canary (Script)
+
+See [Captain Hook's Canary (Canary.md)](Canary.md) for details on the canary script that allows the
+webhooks docker pod to trigger itself to be re-loaded when there are new hooks
+added to captain hook.
+
 
 ## Volumes and Files
 
@@ -62,16 +67,6 @@ Captain Hook runs a Flask server on port 5000 and listens for triggers
 from git.charlesreid1.com (gitea) web hooks. These web hooks must have 
 the correct secret or the trigger will be ignored.
 
-
-
-
-
-This docker container needs to share a few folders:
-
-This uses one shared volume between the two containers.
-
-Captain Hook updates the static content based on web hooks that it receives,
-while the nginx container serves up the static content.
 
 ## Servers 
 
