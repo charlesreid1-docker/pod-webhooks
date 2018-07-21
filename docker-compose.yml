@@ -19,6 +19,8 @@ services:
       - "5000:5000"
     volumes:
       - "stormy_webhooks_data:/www"
+      - "/tmp/triggers:/tmp/triggers"
+      - "./b-captain-hook/hooks:/app/hooks"
 
 volumes:
   stormy_webhooks_data:
