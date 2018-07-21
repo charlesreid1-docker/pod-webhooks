@@ -66,6 +66,26 @@ for a trigger file in a directory mounted between the host and container. If the
 trigger file is present, the host will update its copy of Captain Hook,
 then restart the webhooks-subdomains docker pod.
 
+As per the [`blackbeard_scripts`](https://git.charlesreid1.com/dotfiles/debian/src/branch/master/dotfiles/blackbeard_scripts)
+directory of [dotfiles/debian](https://git.charlesreid1.com/dotfiles/debian),
+the `captain_hook_canary.sh` canary will restart the webhooks docker pod if it 
+detects the file:
+
+```
+/tmp/triggers/push-b-captain-hook-master
+```
+
+(it will then remove it.) 
+
+Now a hook can be added to Captain Hook that will be run when there is a push event
+on the master branch of [bots/b-captain-hook](https://git.charlesreid1.com/bots/b-captain-hook).
+By creating a hook named `push-b-captain-hook-master` in the
+`hooks/` directory of captain hook that runs a simple `touch` command,
+this webhook can trigger the script which triggers a restart of the
+docker pod.
+
+Code: <https://git.charlesreid1.com/bots/b-captain-hook/src/branch/master/hooks/push-b-captain-hook-master>
+
 
 ## Network
 
