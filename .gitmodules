@@ -4,3 +4,6 @@
 [submodule "d-nginx-subdomains"]
 	path = d-nginx-subdomains
 	url = https://git.charlesreid1.com/docker/d-nginx-subdomains.git
+[submodule "mkdocs-material"]
+	path = mkdocs-material
+	url = https://git.charlesreid1.com/charlesreid1/mkdocs-material
