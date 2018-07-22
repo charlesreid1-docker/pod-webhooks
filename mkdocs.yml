@@ -13,8 +13,8 @@ theme:
   name: null
   custom_dir: 'mkdocs-material/material'
   palette:
-    primary: 'pink'
-    accent: 'pink'
+    primary: 'blue'
+    accent: 'blue'
   logo:
     icon: 'dns'
   font:
