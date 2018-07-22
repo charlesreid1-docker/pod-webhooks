@@ -1,0 +1,37 @@
+site_name: pod-webhooks
+site_url: https://pages.charlesreid1.com/pod-webhooks
+repo_name: pod-webhooks
+repo_url: https://git.charlesreid1.com/docker/pod-webhooks
+edit_uri: ""
+copyright: 'Copyright &copy; 2018 <a href="https://charlesreid1.com">Charles Reid</a>, released under the <a href="https://opensource.org/licenses/MIT">MIT license</a>'
+
+docs_dir: docs
+site_dir: site
+extra_css:
+  - css/custom.css
+theme: 
+  name: null
+  custom_dir: 'mkdocs-material/material'
+  palette:
+    primary: 'pink'
+    accent: 'pink'
+  logo:
+    icon: 'dns'
+  font:
+    text: 'Roboto'
+    code: 'Roboto Mono'
+pages:
+  - Home: 'index.md'
+  - Adding Webhooks: 'Adding.md'
+  - Running Captain Hook: 'Running.md'
+  - Captain Hook Startup Services: 'Services.md'
+  - Captain Hook's Canary: 'Canary.md'
+
+# Extensions
+markdown_extensions:
+  - admonition
+  - codehilite:
+      guess_lang: false
+  - toc:
+      permalink: true
+
