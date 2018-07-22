@@ -1,0 +1,527 @@
+
+
+
+
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      <meta http-equiv="x-ua-compatible" content="ie=edge">
+      
+      
+        <link rel="canonical" href="https://pages.charlesreid1.com/pod-webhooks/Services/">
+      
+      
+      
+        <meta name="lang:clipboard.copy" content="Copy to clipboard">
+      
+        <meta name="lang:clipboard.copied" content="Copied to clipboard">
+      
+        <meta name="lang:search.language" content="en">
+      
+        <meta name="lang:search.pipeline.stopwords" content="True">
+      
+        <meta name="lang:search.pipeline.trimmer" content="True">
+      
+        <meta name="lang:search.result.none" content="No matching documents">
+      
+        <meta name="lang:search.result.one" content="1 matching document">
+      
+        <meta name="lang:search.result.other" content="# matching documents">
+      
+        <meta name="lang:search.tokenizer" content="[\s\-]+">
+      
+      <link rel="shortcut icon" href="../">
+      <meta name="generator" content="mkdocs-0.17.3, mkdocs-material-2.7.2">
+    
+    
+      
+        <title>Captain Hook Startup Services - pod-webhooks</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/application.8d40d89b.css">
+      
+        <link rel="stylesheet" href="../assets/stylesheets/application-palette.6079476c.css">
+      
+    
+    
+      <script src="../assets/javascripts/modernizr.1aa3b519.js"></script>
+    
+    
+      <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+      
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700|Roboto+Mono">
+        <style>body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}</style>
+      
+      <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    
+    
+      <link rel="stylesheet" href="../css/custom.css">
+    
+    
+  </head>
+  
+    
+    
+    <body dir="ltr" data-md-color-primary="pink" data-md-color-accent="pink">
+  
+    <svg class="md-svg">
+      <defs>
+        
+        
+      </defs>
+    </svg>
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="search" autocomplete="off">
+    <label class="md-overlay" data-md-component="overlay" for="drawer"></label>
+    
+      <a href="#running-hooks-subdomains-docker-pod-as-startup-service" tabindex="1" class="md-skip">
+        Skip to content
+      </a>
+    
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid">
+    <div class="md-flex">
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <a href="https://pages.charlesreid1.com/pod-webhooks" title="pod-webhooks" class="md-header-nav__button md-logo">
+          
+            <i class="md-icon">dns</i>
+          
+        </a>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <label class="md-icon md-icon--menu md-header-nav__button" for="drawer"></label>
+      </div>
+      <div class="md-flex__cell md-flex__cell--stretch">
+        <div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
+          
+            
+              <span class="md-header-nav__topic">
+                pod-webhooks
+              </span>
+              <span class="md-header-nav__topic">
+                Captain Hook Startup Services
+              </span>
+            
+          
+        </div>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        
+          
+            <label class="md-icon md-icon--search md-header-nav__button" for="search"></label>
+            
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query" data-md-state="active">
+      <label class="md-icon md-search__icon" for="search"></label>
+      <button type="reset" class="md-icon md-search__icon" data-md-component="reset" tabindex="-1">
+        &#xE5CD;
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="result">
+          <div class="md-search-result__meta">
+            Type to start searching
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+          
+        
+      </div>
+      
+        <div class="md-flex__cell md-flex__cell--shrink">
+          <div class="md-header-nav__source">
+            
+
+
+  
+
+
+  <a href="https://git.charlesreid1.com/docker/pod-webhooks" title="Go to repository" class="md-source" data-md-source="">
+    
+    <div class="md-source__repository">
+      pod-webhooks
+    </div>
+  </a>
+
+          </div>
+        </div>
+      
+    </div>
+  </nav>
+</header>
+    
+    <div class="md-container">
+      
+        
+      
+      <main class="md-main">
+        <div class="md-main__inner md-grid" data-md-component="container">
+          
+            
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    <nav class="md-nav md-nav--primary" data-md-level="0">
+  <label class="md-nav__title md-nav__title--site" for="drawer">
+    <span class="md-nav__button md-logo">
+      
+        <i class="md-icon">dns</i>
+      
+    </span>
+    pod-webhooks
+  </label>
+  
+    <div class="md-nav__source">
+      
+
+
+  
+
+
+  <a href="https://git.charlesreid1.com/docker/pod-webhooks" title="Go to repository" class="md-source" data-md-source="">
+    
+    <div class="md-source__repository">
+      pod-webhooks
+    </div>
+  </a>
+
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href=".." title="Home" class="md-nav__link">
+      Home
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../Adding/" title="Adding Webhooks" class="md-nav__link">
+      Adding Webhooks
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../Running/" title="Running Captain Hook" class="md-nav__link">
+      Running Captain Hook
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="toc">
+    
+    
+      <label class="md-nav__link md-nav__link--active" for="toc">
+        Captain Hook Startup Services
+      </label>
+    
+    <a href="./" title="Captain Hook Startup Services" class="md-nav__link md-nav__link--active">
+      Captain Hook Startup Services
+    </a>
+    
+      
+<nav class="md-nav md-nav--secondary">
+  
+  
+  
+    <label class="md-nav__title" for="toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#running-hooks-subdomains-docker-pod-as-startup-service" title="Running Hooks-Subdomains Docker Pod as Startup Service" class="md-nav__link">
+    Running Hooks-Subdomains Docker Pod as Startup Service
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#service-1-webhooks-docker-pod" title="Service 1: Webhooks Docker Pod" class="md-nav__link">
+    Service 1: Webhooks Docker Pod
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
+    
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../Canary/" title="Captain Hook's Canary" class="md-nav__link">
+      Captain Hook's Canary
+    </a>
+  </li>
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary">
+  
+  
+  
+    <label class="md-nav__title" for="toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#running-hooks-subdomains-docker-pod-as-startup-service" title="Running Hooks-Subdomains Docker Pod as Startup Service" class="md-nav__link">
+    Running Hooks-Subdomains Docker Pod as Startup Service
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#service-1-webhooks-docker-pod" title="Service 1: Webhooks Docker Pod" class="md-nav__link">
+    Service 1: Webhooks Docker Pod
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                
+                  <h1>Captain Hook Startup Services</h1>
+                
+                <h2 id="running-hooks-subdomains-docker-pod-as-startup-service">Running Hooks-Subdomains Docker Pod as Startup Service<a class="headerlink" href="#running-hooks-subdomains-docker-pod-as-startup-service" title="Permanent link">&para;</a></h2>
+<p>The webhooks-subdomains docker pod requires two startup
+services - one keeps the docker pod running, the other
+watches a folder shared between the host and container
+for signals from the container, and uses that to trigger
+updates to the subdomains web content.</p>
+<p>Also see the <code>services/</code> folder of the
+<a href="https://git.charlesreid1.com/dotfiles/debian">dotfiles/debian repository</a>,
+repository for the systemd services.</p>
+<h3 id="service-1-webhooks-docker-pod">Service 1: Webhooks Docker Pod<a class="headerlink" href="#service-1-webhooks-docker-pod" title="Permanent link">&para;</a></h3>
+<p>This service keeps the webhooks docker pod service running
+continuously. If the pod stops, this service will restart it.</p>
+<p>(This service should not be running if you are troubleshooting
+the docker pod.)</p>
+<p><strong><code>dockerpod-webhooks.service:</code></strong></p>
+<div class="codehilite"><pre><span></span>[Unit]
+Description=webhooks and subdomains docker pod
+Requires=docker.service
+After=docker.service
+
+[Service]
+Restart=always
+ExecStart=/usr/local/bin/docker-compose -f /home/charles/codes/docker/pod-webhooks/docker-compose.yml up
+ExecStop=/usr/local/bin/docker-compose  -f /home/charles/codes/docker/pod-webhooks/docker-compose.yml down
+
+[Install]
+WantedBy=default.target
+</pre></div>
+
+
+<p><strong><code>captain-hook-canary.service:</code></strong></p>
+<div class="codehilite"><pre><span></span>[Unit]
+Description=captain hook canary script
+Requires=dockerpod-captainhook.service
+After=dockerpod-captainhook.service
+
+[Service]
+Restart=always
+ExecStart=/home/charles/blackbeard_scripts/captain_hook_canary.sh
+ExecStop=/usr/bin/pgrep -f captain_hook_canary | /usr/bin/xargs /bin/kill 
+
+[Install]
+WantedBy=default.target
+</pre></div>
+
+
+<p>Now install the service to <code>/etc/systemd/system/dockerpod-webhooks.servce</code>,
+and/or <code>/etc/systemd/system/captain-hook-canary.servce</code>,
+and activate it:</p>
+<div class="codehilite"><pre><span></span>sudo systemctl enable dockerpod-webhooks.service
+
+sudo systemctl enable captain-hook-canary.service
+</pre></div>
+
+
+<p>Now you can start/stop the service with:</p>
+<div class="codehilite"><pre><span></span>sudo systemctl (start|stop) dockerpod-webhooks.service
+
+sudo systemctl (start|stop) captain-hook-canary.service
+</pre></div>
+
+
+<p>As mentioned above, these services should be stopped before
+doing a <code>docker-compose stop</code> or a <code>docker-compose up --build</code>
+to keep the pod from respawning in the middle of the task.</p>
+<p>Stop using:</p>
+<div class="codehilite"><pre><span></span>sudo systemctl stop dockerpod-webhooks.service
+
+sudo systemctl stop captain-hook-canary.service
+</pre></div>
+                
+                  
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid">
+        
+          <a href="../Running/" title="Running Captain Hook" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+            </div>
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  Previous
+                </span>
+                Running Captain Hook
+              </span>
+            </div>
+          </a>
+        
+        
+          <a href="../Canary/" title="Captain Hook's Canary" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  Next
+                </span>
+                Captain Hook's Canary
+              </span>
+            </div>
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
+            </div>
+          </a>
+        
+      </nav>
+    </div>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+          <div class="md-footer-copyright__highlight">
+            Copyright &copy; 2018 <a href="https://charlesreid1.com">Charles Reid</a>, released under the <a href="https://opensource.org/licenses/MIT">MIT license</a>
+          </div>
+        
+        powered by
+        <a href="http://www.mkdocs.org">MkDocs</a>
+        and
+        <a href="https://squidfunk.github.io/mkdocs-material/">
+          Material for MkDocs</a>
+      </div>
+      
+        
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    
+      <script src="../assets/javascripts/application.0cf9b500.js"></script>
+      
+      <script>app.initialize({version:"0.17.3",url:{base:".."}})</script>
+      
+        <script src="../search/require.js"></script>
+      
+        <script src="../search/search.js"></script>
+      
+    
+    
+      
+    
+  </body>
+</html>
