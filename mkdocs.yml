@@ -20,7 +20,7 @@ theme:
   font:
     text: 'Roboto'
     code: 'Roboto Mono'
-pages:
+nav:
   - Home: 'index.md'
   - Adding Webhooks: 'Adding.md'
   - Running Captain Hook: 'Running.md'
@@ -35,3 +35,6 @@ markdown_extensions:
   - toc:
       permalink: true
 
+
+
+strict: true
