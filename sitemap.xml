@@ -1,44 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-
-    
     <url>
      <loc>https://pages.charlesreid1.com/pod-webhooks/</loc>
-     <lastmod>2018-07-22</lastmod>
+     <lastmod>2018-08-11</lastmod>
      <changefreq>daily</changefreq>
     </url>
-    
-
-    
     <url>
      <loc>https://pages.charlesreid1.com/pod-webhooks/Adding/</loc>
-     <lastmod>2018-07-22</lastmod>
+     <lastmod>2018-08-11</lastmod>
      <changefreq>daily</changefreq>
     </url>
-    
-
-    
     <url>
      <loc>https://pages.charlesreid1.com/pod-webhooks/Running/</loc>
-     <lastmod>2018-07-22</lastmod>
+     <lastmod>2018-08-11</lastmod>
      <changefreq>daily</changefreq>
     </url>
-    
-
-    
     <url>
      <loc>https://pages.charlesreid1.com/pod-webhooks/Services/</loc>
-     <lastmod>2018-07-22</lastmod>
+     <lastmod>2018-08-11</lastmod>
      <changefreq>daily</changefreq>
     </url>
-    
-
-    
     <url>
      <loc>https://pages.charlesreid1.com/pod-webhooks/Canary/</loc>
-     <lastmod>2018-07-22</lastmod>
+     <lastmod>2018-08-11</lastmod>
      <changefreq>daily</changefreq>
     </url>
-    
-
 </urlset>
