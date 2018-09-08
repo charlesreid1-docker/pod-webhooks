@@ -20,3 +20,16 @@ Source code on git.charlesreid1.com: <https://git.charlesreid1.com/docker/pod-we
 
 Source code on github.com: <https://github.com/charlesreid1-docker/pod-webhooks>
 
+## If you get a 403
+
+If you visit the IP of the page running things and you get a 403,
+it's probably because you haven't created the `/www/` directory
+structure yet. To do this, you need:
+
+```
+/www/pages.charlesreid1.com/
+/www/bots.charlesreid1.com/
+/www/hooks.charlesreid1.com/
+```
+
+Script?
