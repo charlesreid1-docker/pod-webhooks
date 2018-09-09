@@ -17,12 +17,12 @@ services:
 
   stormy_captain_hook:
     build: b-captain-hook
-    ports:
-      - "5000:5000"
     volumes:
       - "/www/pages.charlesreid1.com:/www/pages.charlesreid1.com"
       - "/www/hooks.charlesreid1.com:/www/hooks.charlesreid1.com"
       - "/www/bots.charlesreid1.com:/www/bots.charlesreid1.com"
       - "/tmp/triggers:/tmp/triggers"
       - "./b-captain-hook/hooks:/app/hooks"
+    ports:
+      - "5000:5000"
 
