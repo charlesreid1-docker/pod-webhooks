@@ -1,4 +1,4 @@
-version: "3.1"
+version: "3.3"
 services:
 
   stormy_nginx_subs:
@@ -10,6 +10,8 @@ services:
       - "/www/pages.charlesreid1.com/htdocs:/www/pages.charlesreid1.com/htdocs:ro"
       - "/www/hooks.charlesreid1.com/htdocs:/www/hooks.charlesreid1.com/htdocs:ro"
       - "/www/bots.charlesreid1.com/htdocs:/www/bots.charlesreid1.com/htdocs:ro"
+    logging:
+      driver: "json-file"
     ports:
       - "7777:7777"
       - "7778:7778"
@@ -22,7 +24,10 @@ services:
       - "/www/hooks.charlesreid1.com:/www/hooks.charlesreid1.com"
       - "/www/bots.charlesreid1.com:/www/bots.charlesreid1.com"
       - "/tmp/triggers:/tmp/triggers"
+      - "./b-captain-hook/config.json/app/config.json"
       - "./b-captain-hook/hooks:/app/hooks"
+    logging:
+      driver: "json-file"
     ports:
       - "5000:5000"
 
