@@ -32,4 +32,3 @@ structure yet. To do this, you need:
 /www/hooks.charlesreid1.com/
 ```
 
-Script?

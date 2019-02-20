@@ -18,6 +18,24 @@ Source code on git.charlesreid1.com: <https://git.charlesreid1.com/docker/pod-we
 Source code on github.com: <https://github.com/charlesreid1-docker/pod-webhooks>
 
 
+## Initial Setup of Pages Subdomain
+
+The pages.charlesreid1.com subdomain is served from content
+in the directory `/www/pages.charlesreid1.com`.
+
+To set this up with pages and sites that should exist already,
+use the set up script at `scripts/pages_init_setup.py` and
+run it on the pages.charlesreid1.com server:
+
+```
+python scripts/pages_init_setup.py
+```
+
+This will create the `/www/pages.charlesreid1.com/` directory
+structure and will clone several repositories to populate it
+with content.
+
+
 ## Adding Hooks
 
 Since this is probably the only thing you'll care about once everything
@@ -89,8 +107,7 @@ for a trigger file in a directory mounted between the host and container. If the
 trigger file is present, the host will update its copy of Captain Hook,
 then restart the webhooks-subdomains docker pod.
 
-As per the [`blackbeard_scripts`](https://git.charlesreid1.com/dotfiles/debian/src/branch/master/dotfiles/blackbeard_scripts)
-directory of [dotfiles/debian](https://git.charlesreid1.com/dotfiles/debian),
+As per the [dotfiles/debian](https://git.charlesreid1.com/dotfiles/debian) repo,
 the `captain_hook_canary.sh` canary will restart the webhooks docker pod if it 
 detects the file:
 
