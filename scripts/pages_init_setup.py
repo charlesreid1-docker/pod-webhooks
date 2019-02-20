@@ -13,7 +13,6 @@ bots/b-captain-hook
 bots/b-ginsberg
 bots/b-milton
 bots/boring-mind-machine
-charelsreid1/bots.charlesreid1.com
 docker/d-gitea
 docker/d-mediawiki
 docker/d-mysql
@@ -27,25 +26,19 @@ bots/embarcadero-mind-machine
 charlesreid1/git-commit-ectomy
 charlesreid1/git-subway-maps
 charlesreid1/github-heroku-attack-rabbits
-charlesreid1/hooks.charlesreid1.com
 charlesreid1/how-do-i-heroku
 charlesreid1/how-do-i-pandoc
 charlesreid1/how-do-i-pelican
 charlesreid1/how-do-i-pyenv
 charlesreid1/how-do-i-snakemake
-bots/mississippi-mind-machine
-charlesreid1/pages.charlesreid1.com
-bots/papyrus-mind-machine
 docker/pod-bots
 docker/pod-charlesreid1
 docker/pod-webhooks
 bots/rainbow-mind-machine
 bots/russian-rainbow-mind-machine
 charlesreid1/scurvy-knave-theme
-charlesreid1/search-demo-mkdocs-material
 charlesreid1/translate-yer-docs
 charlesreid1/uncle-archie
-bots/waxing-gibbous-mind-machine
 charlesreid1/wisko-manual'''.split('\n')
 
 repo_urls = ['https://git.charlesreid1.com/%s.git'%(j) for j in repo_names]
