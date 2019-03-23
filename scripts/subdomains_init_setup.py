@@ -8,7 +8,7 @@ import os
 subs = ['bots','pages','hooks']
 urls = ['https://git.charlesreid1.com/charlesreid1/%s'%(sub) for sub in subs]
 #urls = ['https://github.com/charlesreid1-docker/%s.charlesreid1.com'%(sub) for sub in subs]
-pths = [os.path.join('www',sub) for sub in subs]
+pths = [os.path.join('/www',sub) for sub in subs]
 
 for sub, url, pth in zip(subs,urls,pths):
 
