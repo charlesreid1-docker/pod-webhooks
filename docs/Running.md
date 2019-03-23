@@ -1,12 +1,13 @@
 ## The Docker Compose File
 
-The `docker-compose.yml` file contains all the directives needed
-to run a docker pod for captain hook and the subdomains nginx server.
+The `docker-compose.yml` file contains everything needed to 
+run the webhooks docker pod, which includes Captain Hook, and 
+an nginx server to serve up static pages for each subdomain.
 
 Why use docker-compose instead of docker? 
 docker-compose is the preferred way to run multiple containers.
 
-## Running Webhooks-Subdomains Docker Pod from Command Line
+## Running Webhooks Docker Pod from Command Line
 
 Run the pod in the foreground or background by running these
 commands from the directory containing `docker-compose.yml`:
@@ -16,13 +17,15 @@ docker-compose up       # interactive
 docker-compose up -d    # detached
 ```
 
-If you want to rebuild all the containers before running up,
+If you want to rebuild all the containers before bringing 
+the pod up, add the `--build` flag:
 
 ```
 docker-compose up --build
 ```
 
-If you just want to rebuild the containers,
+If you just want to rebuild the containers without bringing 
+them up,
 
 ```
 docker-compose build
@@ -35,7 +38,7 @@ docker-compose build --no-cache
 ```
 
 ***WARNING:*** this will re-download all aptitude packages,
-which can be extremely slow. Use with caution.)
+which can be extremely slow. Use with caution.
 
 You can restart all containers in a pod using the restart command:
 
