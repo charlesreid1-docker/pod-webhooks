@@ -98,31 +98,34 @@ on the contents of `/www/pages.charlesreid1.com/my-page`.
 
 ### Captain Hook's Canary
 
-Captain Hook presents a bit of a paradox: the webhook docker pod needs to be 
-able to tell the host to restart the webhook docker pod when changes are pushed
-to Captain Hook itself.
+Captain Hook presents a bit of a paradox: what happens when Captain Hook installs
+a hook for itself, and detects that Captain Hook itself has changed?
 
-This is done by Captain Hook's Canary. This is a script that checks every 10 seconds
-for a trigger file in a directory mounted between the host and container. If the 
-trigger file is present, the host will update its copy of Captain Hook,
+In this case, the webhooks docker pod needs to be able to tell the host machine 
+to restart the webhooks docker pod.
+
+This is done by Captain Hook's Canary. This is a service script that checks every 
+10 seconds for a trigger file in a directory mounted between the host and container. 
+If the trigger file is present, the host will update its copy of Captain Hook,
 then restart the webhooks-subdomains docker pod.
 
 As per the [dotfiles/debian](https://git.charlesreid1.com/dotfiles/debian) repo,
 the `captain_hook_canary.sh` canary will restart the webhooks docker pod if it 
-detects the file:
+detects the presence following file:
 
 ```
 /tmp/triggers/push-b-captain-hook-master
 ```
 
-(The canary script will clean up this file.)
+(The canary script will remove this file once it has restarted the webhooks docker pod.)
 
-Now a hook can be added to Captain Hook that will be run when there is a push event
+Now, a hook can be added to Captain Hook that will be run when there is a push event
 on the master branch of [bots/b-captain-hook](https://git.charlesreid1.com/bots/b-captain-hook).
 By creating a hook named `push-b-captain-hook-master` in the
-`hooks/` directory of captain hook that runs a simple `touch` command,
-this webhook can trigger the script which triggers a restart of the
-docker pod.
+`hooks/` directory of Captain Hook, and having it simply run
+`touch /tmp/triggers/push-b-captain-hook-master`,
+this webhook can trigger the Captain Hook's Canary service script, 
+which triggers a restart of the webhooks docker pod.
 
 Code: <https://git.charlesreid1.com/bots/b-captain-hook/src/branch/master/hooks/push-b-captain-hook-master>
 
@@ -144,15 +147,30 @@ the correct secret or the trigger will be ignored.
 
 ## Servers 
 
-This pod runs on blackbeard.
+[pod-webhooks](https://pages.charlesreid1.com/pod-webhooks/) 
+runs on a virtual server somewhere.
 
-The nginx service is reverse-proxied HTTP with krash,
-and accessible at ports 7777+ and up.
+This pod's nginx service provides a backend that is 
+reverse-proxied by the machine running 
+[pod-charlesreid1](https://pages.charlesreid1.com/pod-charlesreid1)
+(and the whole <https://charlesreid1.com> frontend).
+It opens ports 7777+ and up (one per subdomain).
 
-The Captain Hook webhook server is also reverse-proxied HTTP.
-The krash nginx server will handle all traffic to 
-<https://hooks.charlesreid1.com> except URLs prefixed
-with `webhook`, which are forwarded on to Captain Hook
-on port 5000.
+The [pod-charlesreid1](https://pages.charlesreid1.com/pod-charlesreid1)
+docker pod (actually the 
+[d-nginx-charlesreid1](https://pages.charlesreid1.com/d-nginx-charlesreid1/)
+submodule in that pod) contains the nginx 
+config files that control the reverse proxy
+behavior of <https://charlesreid1.com>.
 
+Like the nginx service in this webhooks pod, the Captain Hook
+webhook service is also reverse-proxied by the main nginx frontend
+running <https://charlesreid1.com> with the 
+[pod-charlesreid1](https://pages.charlesreid1.com/pod-charlesreid1)
+docker pod. If a URL request for <https://hooks.charlesreid1.com>
+is received by the <https://charlesreid1.com> server,
+it is forwarded to the machine running the [pod-webhooks]()
+docker pod, which decides whether it is a POST request
+(that should be sent to this pod's Captain Hook) or a GET request
+(that should be sent to this pod's nginx).
 
