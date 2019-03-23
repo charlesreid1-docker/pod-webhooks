@@ -12,22 +12,29 @@ services:
       - "/www/bots.charlesreid1.com/htdocs:/www/bots.charlesreid1.com/htdocs:ro"
     logging:
       driver: "json-file"
+      options:
+        max-size: 1m
+        max-file: 10
     ports:
       - "7777:7777"
       - "7778:7778"
       - "7779:7779"
 
   stormy_captain_hook:
+    restart: always
     build: b-captain-hook
     volumes:
       - "/www/pages.charlesreid1.com:/www/pages.charlesreid1.com"
       - "/www/hooks.charlesreid1.com:/www/hooks.charlesreid1.com"
       - "/www/bots.charlesreid1.com:/www/bots.charlesreid1.com"
       - "/tmp/triggers:/tmp/triggers"
-      - "./b-captain-hook/config.json/app/config.json"
+      - "./b-captain-hook/config.json:/app/config.json"
       - "./b-captain-hook/hooks:/app/hooks"
     logging:
       driver: "json-file"
+      options:
+        max-size: 1m
+        max-file: 10
     ports:
       - "5000:5000"
 
