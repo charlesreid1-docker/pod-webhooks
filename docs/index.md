@@ -41,17 +41,17 @@ with content.
 Since this is probably the only thing you'll care about once everything
 is actually running... until it breaks.
 
-[How To Add A Hook](Adding.md)
+[How To Add A Hook](adding.md)
 
 
 ## How It Works
 
-See [Running.md](Running.md) for info about running this docker pod.
+See [Running.md](running.md) for info about running this docker pod.
 
 * Running the Docker Pod from Comand Line
 * Workflow for Docker Pod Updates
 
-See [Services.md](Services.md) for info about running startup services.
+See [Services.md](services.md) for info about running startup services.
 
 * Running the Docker Pod as a Startup Service
 * Running Captain Hook's Canary (Script)
@@ -59,18 +59,18 @@ See [Services.md](Services.md) for info about running startup services.
 Enable/disable service (installs/uninstalls, but does not start):
 
 ```
-sudo systemctl (enable|disable) dockerpod-webhooks.service
+sudo systemctl (enable|disable) pod-webhooks.service
 sudo systemctl (enable|disable) captain-hook-canary.service
 ```
 
 Start/stop:
 
 ```
-sudo systemctl (start|stop) dockerpod-webhooks.service
+sudo systemctl (start|stop) pod-webhooks.service
 sudo systemctl (start|stop) captain-hook-canary.service
 ```
 
-See [Captain Hook's Canary (Canary.md)](Canary.md) for details on the canary script that allows the
+See [Captain Hook's Canary](canary.md) for details on the canary script that allows the
 webhooks docker pod to trigger itself to be re-loaded when there are new hooks
 added to captain hook.
 
@@ -169,7 +169,7 @@ running <https://charlesreid1.com> with the
 [pod-charlesreid1](https://pages.charlesreid1.com/pod-charlesreid1)
 docker pod. If a URL request for <https://hooks.charlesreid1.com>
 is received by the <https://charlesreid1.com> server,
-it is forwarded to the machine running the [pod-webhooks]()
+it is forwarded to the machine running the [pod-webhooks](https://git.charlesreid1.com/pod-webhooks)
 docker pod, which decides whether it is a POST request
 (that should be sent to this pod's Captain Hook) or a GET request
 (that should be sent to this pod's nginx).
