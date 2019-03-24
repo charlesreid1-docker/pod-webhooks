@@ -1,26 +1,33 @@
 # Captain Hook's Canary
 
-Captain Hook's Canary is a mechanism by which a docker pod
-running a webhook server can send a signal to the host to 
-restart the docker pod.
+First things first: Captain Hook is the webhook server that
+is part of the webhooks docker pod. It receives webhooks
+from Github and Gitea and uses them to trigger scrips.
+Links to [documentation](https://pages.charlesreid1.com/b-captain-hook)
+and [code](https://git.charlesreid1.com/bots/b-captain-hook)
+for Captain Hook.
+
+Captain Hook's Canary is a mechanism by which the Captain Hook
+webhooks server (running in a docker container) can trigger an action 
+on the host machine (running the pod). In this case the action is to
+update Captain Hook and restart the docker pod anytime a webhook is
+received indicating the Captain Hook repo has changed.
 
 This is done by bind-mounting a host directory at `/tmp/triggers/`
-inside the docker container, and when a webhook is received 
-from git.charlesreid1.com that indicates there was a change
-to Captain Hook, the docker pod creates a trigger file.
+inside the Captain Hook docker container. When Captain Hook receives
+a webhook from Github or Gitea that indicates the Captain Hook
+repo (<https://git.charlesreid1.com/bots/b-captain-hook> or
+<https://github.com/charlesreid1/captain-hook>), it creates a
+trigger file.
 
-The canary bash script, meanwhile, is a bash script that runs 
-forever and checks for a trigger file from the docker pod
-every 10 seconds.
+Meanwhile, on the host that is running the docker pod, a service 
+script is running continuously to check for that trigger file
+every 10 seconds. If the trigger file is seen, it updates the
+Captain Hook git repository on the host machine and then restarts
+the docker pod.
 
-The pull host Captain Hook script is a script that updates the
-Captain Hook git repo on the host machine.
+Sections below cover the following scripts, all run on the host:
 
-On top of all of that, we also need a startup service that will
-actually run the captain hook canary script, and keep it running,
-and stop it when we ask it to stop.
-
-Sections below cover:
 * The canary bash script
 * The docker host pull script
 * The canary statup service
@@ -56,15 +63,18 @@ and this script processes each trigger differently.
 ```bash
 #!/bin/bash
 
+TRIGGER="/tmp/triggers/push-b-captain-hook-master"
+UPDATE_SCRIPT="${HOME}/pod-webhooks/scripts/captain_hook_pull_host.py"
+
 while true
 do
     # bootstrap-pull captain hook
-    if [ -f "/tmp/triggers/push-b-captain-hook-master" ]; then
+    if [ -f "$TRIGGER" ]; then
         echo "CAPTAIN HOOK'S CANARY:"
         echo "Running trigger to update Captain Hook on the host machine (user charles)"
-        sudo -H -u charles python /home/charles/blackbeard_scripts/captain_hook_pull_host.py
+        sudo -H -u charles python $UPDATE_SCRIPT
         echo "All done."
-        rm -f "/tmp/triggers/push-b-captain-hook-master"
+        rm -f ${TRIGGER}
     fi
 
     sleep 10;
@@ -97,7 +107,7 @@ of Captain Hook running on the host, and
 restart the container pod.
 """
 
-work_dir = os.path.join('/home','charles','codes','bots','b-captain-hook')
+work_dir = os.path.join('/home','charles','pod-webhooks','b-captain-hook')
 
 # Step 1:
 # Update Captain Hook
@@ -121,18 +131,18 @@ The stop directive uses pgrep to find the process id and stops any PIDs returned
 ```
 [Unit]
 Description=captain hook canary script
-Requires=dockerpod-captainhook.service
-After=dockerpod-captainhook.service
+Requires=pod-webhooks.service
+After=pod-webhooks.service
 
 [Service]
 Restart=always
-ExecStart=/home/charles/blackbeard_scripts/captain_hook_canary.sh
+ExecStart=/home/charles/pod-webhooks/scripts/captain_hook_canary.sh
 ExecStop=/usr/bin/pgrep -f captain_hook_canary | /usr/bin/xargs /bin/kill 
 
 [Install]
 WantedBy=default.target
 ```
 
-See [Services](Services.md) for more info on what to do with this file.
+See [Services](services.md) for more info on what to do with this file.
 
 

@@ -1,7 +1,7 @@
 ## The Docker Compose File
 
 The `docker-compose.yml` file contains everything needed to 
-run the webhooks docker pod, which includes Captain Hook, and 
+run the webhooks docker pod: a Captain Hook webhook server, and 
 an nginx server to serve up static pages for each subdomain.
 
 Why use docker-compose instead of docker? 

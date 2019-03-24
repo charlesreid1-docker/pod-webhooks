@@ -10,9 +10,9 @@ services:
   the docker pod host and the Captain Hook container, which allows the
   pod to send triggers to the host.
 
-Also see the `services/` folder of the
-[dotfiles/debian repository](https://git.charlesreid1.com/dotfiles/debian),
-repository for the systemd services.
+Also see the `scripts/` folder of this repo,
+[pod-webhooks](https://git.charlesreid1.com/docker/pod-webhooks)
+([Github mirror](https://github.com/charlesreid1-docker/pod-webhooks)).
 
 
 ### Docker Pod Startup Service
@@ -24,7 +24,7 @@ continuously. If the pod stops, this service will restart it.
 the docker pod, otherwise every time you try and stop the pod
 it will respawn.)
 
-**`dockerpod-webhooks.service:`**
+**`pod-webhooks.service:`**
 
 ```
 [Unit]
@@ -41,6 +41,7 @@ ExecStop=/usr/local/bin/docker-compose  -f /home/charles/codes/docker/pod-webhoo
 WantedBy=default.target
 ```
 
+
 ### Captain Hook's Canary Startup Service
 
 This service just watches a folder for a particular
@@ -52,12 +53,12 @@ appear.
 ```
 [Unit]
 Description=captain hook canary script
-Requires=dockerpod-captainhook.service
-After=dockerpod-captainhook.service
+Requires=pod-webhooks.service
+After=pod-webhooks.service
 
 [Service]
 Restart=always
-ExecStart=/home/charles/blackbeard_scripts/captain_hook_canary.sh
+ExecStart=/home/charles/pod-webhooks/scripts/captain_hook_canary.sh
 ExecStop=/usr/bin/pgrep -f captain_hook_canary | /usr/bin/xargs /bin/kill 
 
 [Install]
@@ -72,7 +73,7 @@ and `/etc/systemd/system/captain-hook-canary.servce`,
 and activate the startup services:
 
 ```
-sudo systemctl enable dockerpod-webhooks.service
+sudo systemctl enable pod-webhooks.service
 
 sudo systemctl enable captain-hook-canary.service
 ```
@@ -80,7 +81,7 @@ sudo systemctl enable captain-hook-canary.service
 Now you can start/stop the services with:
 
 ```
-sudo systemctl (start|stop) dockerpod-webhooks.service
+sudo systemctl (start|stop) pod-webhooks.service
 
 sudo systemctl (start|stop) captain-hook-canary.service
 ```

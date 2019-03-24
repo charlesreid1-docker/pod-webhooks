@@ -29,14 +29,16 @@ To add a hook to Captain Hook:
 You should see a green success sign. 
 
 
-## Debugging Failed HOoks
+## Debugging Failed Hooks
 
 If you see a red warning sign:
 
 * Ensure the webhooks docker pod is actually running okay (`docker ps` on the host machine)
 * Ensure port 5000 is open in the Captain Hook container, and on the host machine
 * Ensure you can see port 5000 of the `pod-webhooks` host machine from the `pod-charlesreid1` host machine
-* Ensure there is actually a hook in the `hooks/` directory of 
-  [b-captain-hook](https://git.charlesreid1.com/bots/b-captain-hook)
+* Ensure there is actually a hook in the `hooks/` directory of the Captain Hook repo
 
+Captain Hook repo: <https://git.charlesreid1.com/bots/b-captain-hook>
+
+Captain Hook repo (Github mirror): <https://github.com/charlesreid1-docker/b-captain-hook>
 
