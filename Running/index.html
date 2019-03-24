@@ -11,7 +11,7 @@
       <meta http-equiv="x-ua-compatible" content="ie=edge">
       
       
-        <link rel="canonical" href="https://pages.charlesreid1.com/pod-webhooks/Running/">
+        <link rel="canonical" href="https://pages.charlesreid1.com/pod-webhooks/running/">
       
       
       
@@ -34,7 +34,7 @@
         <meta name="lang:search.tokenizer" content="[\s\-]+">
       
       <link rel="shortcut icon" href="..">
-      <meta name="generator" content="mkdocs-1.0, mkdocs-material-3.0.3">
+      <meta name="generator" content="mkdocs-1.0.4, mkdocs-material-3.0.3">
     
     
       
@@ -225,7 +225,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../Adding/" title="Adding Webhooks" class="md-nav__link">
+    <a href="../adding/" title="Adding Webhooks" class="md-nav__link">
       Adding Webhooks
     </a>
   </li>
@@ -267,8 +267,8 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#running-webhooks-subdomains-docker-pod-from-command-line" title="Running Webhooks-Subdomains Docker Pod from Command Line" class="md-nav__link">
-    Running Webhooks-Subdomains Docker Pod from Command Line
+  <a href="#running-webhooks-docker-pod-from-command-line" title="Running Webhooks Docker Pod from Command Line" class="md-nav__link">
+    Running Webhooks Docker Pod from Command Line
   </a>
   
 </li>
@@ -297,7 +297,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../Services/" title="Captain Hook Startup Services" class="md-nav__link">
+    <a href="../services/" title="Captain Hook Startup Services" class="md-nav__link">
       Captain Hook Startup Services
     </a>
   </li>
@@ -309,7 +309,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../Canary/" title="Captain Hook's Canary" class="md-nav__link">
+    <a href="../canary/" title="Captain Hook's Canary" class="md-nav__link">
       Captain Hook's Canary
     </a>
   </li>
@@ -341,8 +341,8 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#running-webhooks-subdomains-docker-pod-from-command-line" title="Running Webhooks-Subdomains Docker Pod from Command Line" class="md-nav__link">
-    Running Webhooks-Subdomains Docker Pod from Command Line
+  <a href="#running-webhooks-docker-pod-from-command-line" title="Running Webhooks Docker Pod from Command Line" class="md-nav__link">
+    Running Webhooks Docker Pod from Command Line
   </a>
   
 </li>
@@ -374,11 +374,12 @@
                   <h1>Running Captain Hook</h1>
                 
                 <h2 id="the-docker-compose-file">The Docker Compose File<a class="headerlink" href="#the-docker-compose-file" title="Permanent link">&para;</a></h2>
-<p>The <code>docker-compose.yml</code> file contains all the directives needed
-to run a docker pod for captain hook and the subdomains nginx server.</p>
+<p>The <code>docker-compose.yml</code> file contains everything needed to 
+run the webhooks docker pod: a Captain Hook webhook server, and 
+an nginx server to serve up static pages for each subdomain.</p>
 <p>Why use docker-compose instead of docker? 
 docker-compose is the preferred way to run multiple containers.</p>
-<h2 id="running-webhooks-subdomains-docker-pod-from-command-line">Running Webhooks-Subdomains Docker Pod from Command Line<a class="headerlink" href="#running-webhooks-subdomains-docker-pod-from-command-line" title="Permanent link">&para;</a></h2>
+<h2 id="running-webhooks-docker-pod-from-command-line">Running Webhooks Docker Pod from Command Line<a class="headerlink" href="#running-webhooks-docker-pod-from-command-line" title="Permanent link">&para;</a></h2>
 <p>Run the pod in the foreground or background by running these
 commands from the directory containing <code>docker-compose.yml</code>:</p>
 <div class="codehilite"><pre><span></span>docker-compose up       # interactive
@@ -386,12 +387,14 @@ docker-compose up -d    # detached
 </pre></div>
 
 
-<p>If you want to rebuild all the containers before running up,</p>
+<p>If you want to rebuild all the containers before bringing 
+the pod up, add the <code>--build</code> flag:</p>
 <div class="codehilite"><pre><span></span>docker-compose up --build
 </pre></div>
 
 
-<p>If you just want to rebuild the containers,</p>
+<p>If you just want to rebuild the containers without bringing 
+them up,</p>
 <div class="codehilite"><pre><span></span>docker-compose build
 </pre></div>
 
@@ -402,7 +405,7 @@ docker-compose up -d    # detached
 
 
 <p><strong><em>WARNING:</em></strong> this will re-download all aptitude packages,
-which can be extremely slow. Use with caution.)</p>
+which can be extremely slow. Use with caution.</p>
 <p>You can restart all containers in a pod using the restart command:</p>
 <div class="codehilite"><pre><span></span>docker-compose restart
 </pre></div>
@@ -441,7 +444,7 @@ getting an up-to-date container image.</p>
     <div class="md-footer-nav">
       <nav class="md-footer-nav__inner md-grid">
         
-          <a href="../Adding/" title="Adding Webhooks" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+          <a href="../adding/" title="Adding Webhooks" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
             <div class="md-flex__cell md-flex__cell--shrink">
               <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
             </div>
@@ -456,7 +459,7 @@ getting an up-to-date container image.</p>
           </a>
         
         
-          <a href="../Services/" title="Captain Hook Startup Services" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+          <a href="../services/" title="Captain Hook Startup Services" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
             <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
               <span class="md-flex__ellipsis">
                 <span class="md-footer-nav__direction">
@@ -498,7 +501,7 @@ getting an up-to-date container image.</p>
     
       <script src="../assets/javascripts/application.e72fd936.js"></script>
       
-      <script>app.initialize({version:"1.0",url:{base:".."}})</script>
+      <script>app.initialize({version:"1.0.4",url:{base:".."}})</script>
       
         <script src="../search/main.js"></script>
       

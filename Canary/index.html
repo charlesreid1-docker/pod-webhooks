@@ -11,7 +11,7 @@
       <meta http-equiv="x-ua-compatible" content="ie=edge">
       
       
-        <link rel="canonical" href="https://pages.charlesreid1.com/pod-webhooks/Canary/">
+        <link rel="canonical" href="https://pages.charlesreid1.com/pod-webhooks/canary/">
       
       
       
@@ -34,7 +34,7 @@
         <meta name="lang:search.tokenizer" content="[\s\-]+">
       
       <link rel="shortcut icon" href="..">
-      <meta name="generator" content="mkdocs-1.0, mkdocs-material-3.0.3">
+      <meta name="generator" content="mkdocs-1.0.4, mkdocs-material-3.0.3">
     
     
       
@@ -225,7 +225,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../Adding/" title="Adding Webhooks" class="md-nav__link">
+    <a href="../adding/" title="Adding Webhooks" class="md-nav__link">
       Adding Webhooks
     </a>
   </li>
@@ -237,7 +237,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../Running/" title="Running Captain Hook" class="md-nav__link">
+    <a href="../running/" title="Running Captain Hook" class="md-nav__link">
       Running Captain Hook
     </a>
   </li>
@@ -249,7 +249,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../Services/" title="Captain Hook Startup Services" class="md-nav__link">
+    <a href="../services/" title="Captain Hook Startup Services" class="md-nav__link">
       Captain Hook Startup Services
     </a>
   </li>
@@ -378,25 +378,34 @@
                 
                 
                 <h1 id="captain-hooks-canary">Captain Hook's Canary<a class="headerlink" href="#captain-hooks-canary" title="Permanent link">&para;</a></h1>
-<p>Captain Hook's Canary is a mechanism by which a docker pod
-running a webhook server can send a signal to the host to 
-restart the docker pod.</p>
+<p>First things first: Captain Hook is the webhook server that
+is part of the webhooks docker pod. It receives webhooks
+from Github and Gitea and uses them to trigger scrips.
+Links to <a href="https://pages.charlesreid1.com/b-captain-hook">documentation</a>
+and <a href="https://git.charlesreid1.com/bots/b-captain-hook">code</a>
+for Captain Hook.</p>
+<p>Captain Hook's Canary is a mechanism by which the Captain Hook
+webhooks server (running in a docker container) can trigger an action 
+on the host machine (running the pod). In this case the action is to
+update Captain Hook and restart the docker pod anytime a webhook is
+received indicating the Captain Hook repo has changed.</p>
 <p>This is done by bind-mounting a host directory at <code>/tmp/triggers/</code>
-inside the docker container, and when a webhook is received 
-from git.charlesreid1.com that indicates there was a change
-to Captain Hook, the docker pod creates a trigger file.</p>
-<p>The canary bash script, meanwhile, is a bash script that runs 
-forever and checks for a trigger file from the docker pod
-every 10 seconds.</p>
-<p>The pull host Captain Hook script is a script that updates the
-Captain Hook git repo on the host machine.</p>
-<p>On top of all of that, we also need a startup service that will
-actually run the captain hook canary script, and keep it running,
-and stop it when we ask it to stop.</p>
-<p>Sections below cover:
-<em> The canary bash script
-</em> The docker host pull script
-* The canary statup service</p>
+inside the Captain Hook docker container. When Captain Hook receives
+a webhook from Github or Gitea that indicates the Captain Hook
+repo (<a href="https://git.charlesreid1.com/bots/b-captain-hook">https://git.charlesreid1.com/bots/b-captain-hook</a> or
+<a href="https://github.com/charlesreid1/captain-hook">https://github.com/charlesreid1/captain-hook</a>), it creates a
+trigger file.</p>
+<p>Meanwhile, on the host that is running the docker pod, a service 
+script is running continuously to check for that trigger file
+every 10 seconds. If the trigger file is seen, it updates the
+Captain Hook git repository on the host machine and then restarts
+the docker pod.</p>
+<p>Sections below cover the following scripts, all run on the host:</p>
+<ul>
+<li>The canary bash script</li>
+<li>The docker host pull script</li>
+<li>The canary statup service</li>
+</ul>
 <h2 id="the-canary-bash-script">The Canary Bash Script<a class="headerlink" href="#the-canary-bash-script" title="Permanent link">&para;</a></h2>
 <p>Note: this needs an associated systemd service.
 See the services directory of the dotfiles repo.</p>
@@ -420,15 +429,18 @@ every 10 seconds for trigger files.</p>
 and this script processes each trigger differently.</p>
 <div class="codehilite"><pre><span></span><span class="ch">#!/bin/bash</span>
 
+<span class="nv">TRIGGER</span><span class="o">=</span><span class="s2">&quot;/tmp/triggers/push-b-captain-hook-master&quot;</span>
+<span class="nv">UPDATE_SCRIPT</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">HOME</span><span class="si">}</span><span class="s2">/pod-webhooks/scripts/captain_hook_pull_host.py&quot;</span>
+
 <span class="k">while</span> <span class="nb">true</span>
 <span class="k">do</span>
     <span class="c1"># bootstrap-pull captain hook</span>
-    <span class="k">if</span> <span class="o">[</span> -f <span class="s2">&quot;/tmp/triggers/push-b-captain-hook-master&quot;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+    <span class="k">if</span> <span class="o">[</span> -f <span class="s2">&quot;</span><span class="nv">$TRIGGER</span><span class="s2">&quot;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
         <span class="nb">echo</span> <span class="s2">&quot;CAPTAIN HOOK&#39;S CANARY:&quot;</span>
         <span class="nb">echo</span> <span class="s2">&quot;Running trigger to update Captain Hook on the host machine (user charles)&quot;</span>
-        sudo -H -u charles python /home/charles/blackbeard_scripts/captain_hook_pull_host.py
+        sudo -H -u charles python <span class="nv">$UPDATE_SCRIPT</span>
         <span class="nb">echo</span> <span class="s2">&quot;All done.&quot;</span>
-        rm -f <span class="s2">&quot;/tmp/triggers/push-b-captain-hook-master&quot;</span>
+        rm -f <span class="si">${</span><span class="nv">TRIGGER</span><span class="si">}</span>
     <span class="k">fi</span>
 
     sleep <span class="m">10</span><span class="p">;</span>
@@ -458,7 +470,7 @@ version of Captain Hook:</p>
 <span class="sd">restart the container pod.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="n">work_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39;/home&#39;</span><span class="p">,</span><span class="s1">&#39;charles&#39;</span><span class="p">,</span><span class="s1">&#39;codes&#39;</span><span class="p">,</span><span class="s1">&#39;bots&#39;</span><span class="p">,</span><span class="s1">&#39;b-captain-hook&#39;</span><span class="p">)</span>
+<span class="n">work_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39;/home&#39;</span><span class="p">,</span><span class="s1">&#39;charles&#39;</span><span class="p">,</span><span class="s1">&#39;pod-webhooks&#39;</span><span class="p">,</span><span class="s1">&#39;b-captain-hook&#39;</span><span class="p">)</span>
 
 <span class="c1"># Step 1:</span>
 <span class="c1"># Update Captain Hook</span>
@@ -479,12 +491,12 @@ version of Captain Hook:</p>
 <p>The stop directive uses pgrep to find the process id and stops any PIDs returned.</p>
 <div class="codehilite"><pre><span></span>[Unit]
 Description=captain hook canary script
-Requires=dockerpod-captainhook.service
-After=dockerpod-captainhook.service
+Requires=pod-webhooks.service
+After=pod-webhooks.service
 
 [Service]
 Restart=always
-ExecStart=/home/charles/blackbeard_scripts/captain_hook_canary.sh
+ExecStart=/home/charles/pod-webhooks/scripts/captain_hook_canary.sh
 ExecStop=/usr/bin/pgrep -f captain_hook_canary | /usr/bin/xargs /bin/kill 
 
 [Install]
@@ -492,7 +504,7 @@ WantedBy=default.target
 </pre></div>
 
 
-<p>See <a href="../Services/">Services</a> for more info on what to do with this file.</p>
+<p>See <a href="../services/">Services</a> for more info on what to do with this file.</p>
                 
                   
                 
@@ -513,7 +525,7 @@ WantedBy=default.target
     <div class="md-footer-nav">
       <nav class="md-footer-nav__inner md-grid">
         
-          <a href="../Services/" title="Captain Hook Startup Services" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+          <a href="../services/" title="Captain Hook Startup Services" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
             <div class="md-flex__cell md-flex__cell--shrink">
               <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
             </div>
@@ -556,7 +568,7 @@ WantedBy=default.target
     
       <script src="../assets/javascripts/application.e72fd936.js"></script>
       
-      <script>app.initialize({version:"1.0",url:{base:".."}})</script>
+      <script>app.initialize({version:"1.0.4",url:{base:".."}})</script>
       
         <script src="../search/main.js"></script>
       

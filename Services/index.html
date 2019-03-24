@@ -11,7 +11,7 @@
       <meta http-equiv="x-ua-compatible" content="ie=edge">
       
       
-        <link rel="canonical" href="https://pages.charlesreid1.com/pod-webhooks/Services/">
+        <link rel="canonical" href="https://pages.charlesreid1.com/pod-webhooks/services/">
       
       
       
@@ -34,7 +34,7 @@
         <meta name="lang:search.tokenizer" content="[\s\-]+">
       
       <link rel="shortcut icon" href="..">
-      <meta name="generator" content="mkdocs-1.0, mkdocs-material-3.0.3">
+      <meta name="generator" content="mkdocs-1.0.4, mkdocs-material-3.0.3">
     
     
       
@@ -225,7 +225,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../Adding/" title="Adding Webhooks" class="md-nav__link">
+    <a href="../adding/" title="Adding Webhooks" class="md-nav__link">
       Adding Webhooks
     </a>
   </li>
@@ -237,7 +237,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../Running/" title="Running Captain Hook" class="md-nav__link">
+    <a href="../running/" title="Running Captain Hook" class="md-nav__link">
       Running Captain Hook
     </a>
   </li>
@@ -280,8 +280,22 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#service-1-webhooks-docker-pod" title="Service 1: Webhooks Docker Pod" class="md-nav__link">
-    Service 1: Webhooks Docker Pod
+  <a href="#docker-pod-startup-service" title="Docker Pod Startup Service" class="md-nav__link">
+    Docker Pod Startup Service
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#captain-hooks-canary-startup-service" title="Captain Hook's Canary Startup Service" class="md-nav__link">
+    Captain Hook's Canary Startup Service
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#installing-services" title="Installing Services" class="md-nav__link">
+    Installing Services
   </a>
   
 </li>
@@ -308,7 +322,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../Canary/" title="Captain Hook's Canary" class="md-nav__link">
+    <a href="../canary/" title="Captain Hook's Canary" class="md-nav__link">
       Captain Hook's Canary
     </a>
   </li>
@@ -341,8 +355,22 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#service-1-webhooks-docker-pod" title="Service 1: Webhooks Docker Pod" class="md-nav__link">
-    Service 1: Webhooks Docker Pod
+  <a href="#docker-pod-startup-service" title="Docker Pod Startup Service" class="md-nav__link">
+    Docker Pod Startup Service
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#captain-hooks-canary-startup-service" title="Captain Hook's Canary Startup Service" class="md-nav__link">
+    Captain Hook's Canary Startup Service
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#installing-services" title="Installing Services" class="md-nav__link">
+    Installing Services
   </a>
   
 </li>
@@ -373,19 +401,28 @@
                 
                 <h2 id="running-hooks-subdomains-docker-pod-as-startup-service">Running Hooks-Subdomains Docker Pod as Startup Service<a class="headerlink" href="#running-hooks-subdomains-docker-pod-as-startup-service" title="Permanent link">&para;</a></h2>
 <p>The webhooks-subdomains docker pod requires two startup
-services - one keeps the docker pod running, the other
-watches a folder shared between the host and container
-for signals from the container, and uses that to trigger
-updates to the subdomains web content.</p>
-<p>Also see the <code>services/</code> folder of the
-<a href="https://git.charlesreid1.com/dotfiles/debian">dotfiles/debian repository</a>,
-repository for the systemd services.</p>
-<h3 id="service-1-webhooks-docker-pod">Service 1: Webhooks Docker Pod<a class="headerlink" href="#service-1-webhooks-docker-pod" title="Permanent link">&para;</a></h3>
+services:</p>
+<ul>
+<li>
+<p>Docker pod service - this startup service keeps the pod running, 
+  and will restart it if it crashes</p>
+</li>
+<li>
+<p>Captain Hook's canary - this watches a folder that is shared between
+  the docker pod host and the Captain Hook container, which allows the
+  pod to send triggers to the host.</p>
+</li>
+</ul>
+<p>Also see the <code>scripts/</code> folder of this repo,
+<a href="https://git.charlesreid1.com/docker/pod-webhooks">pod-webhooks</a>
+(<a href="https://github.com/charlesreid1-docker/pod-webhooks">Github mirror</a>).</p>
+<h3 id="docker-pod-startup-service">Docker Pod Startup Service<a class="headerlink" href="#docker-pod-startup-service" title="Permanent link">&para;</a></h3>
 <p>This service keeps the webhooks docker pod service running
 continuously. If the pod stops, this service will restart it.</p>
 <p>(This service should not be running if you are troubleshooting
-the docker pod.)</p>
-<p><strong><code>dockerpod-webhooks.service:</code></strong></p>
+the docker pod, otherwise every time you try and stop the pod
+it will respawn.)</p>
+<p><strong><code>pod-webhooks.service:</code></strong></p>
 <div class="codehilite"><pre><span></span>[Unit]
 Description=webhooks and subdomains docker pod
 Requires=docker.service
@@ -401,15 +438,19 @@ WantedBy=default.target
 </pre></div>
 
 
+<h3 id="captain-hooks-canary-startup-service">Captain Hook's Canary Startup Service<a class="headerlink" href="#captain-hooks-canary-startup-service" title="Permanent link">&para;</a></h3>
+<p>This service just watches a folder for a particular
+watchfile, and runs a script if it sees the watchfile
+appear.</p>
 <p><strong><code>captain-hook-canary.service:</code></strong></p>
 <div class="codehilite"><pre><span></span>[Unit]
 Description=captain hook canary script
-Requires=dockerpod-captainhook.service
-After=dockerpod-captainhook.service
+Requires=pod-webhooks.service
+After=pod-webhooks.service
 
 [Service]
 Restart=always
-ExecStart=/home/charles/blackbeard_scripts/captain_hook_canary.sh
+ExecStart=/home/charles/pod-webhooks/scripts/captain_hook_canary.sh
 ExecStop=/usr/bin/pgrep -f captain_hook_canary | /usr/bin/xargs /bin/kill 
 
 [Install]
@@ -417,17 +458,19 @@ WantedBy=default.target
 </pre></div>
 
 
-<p>Now install the service to <code>/etc/systemd/system/dockerpod-webhooks.servce</code>,
-and/or <code>/etc/systemd/system/captain-hook-canary.servce</code>,
-and activate it:</p>
-<div class="codehilite"><pre><span></span>sudo systemctl enable dockerpod-webhooks.service
+<h3 id="installing-services">Installing Services<a class="headerlink" href="#installing-services" title="Permanent link">&para;</a></h3>
+<p>Install the services by copying the <code>*.service</code> files 
+to <code>/etc/systemd/system/dockerpod-webhooks.servce</code>
+and <code>/etc/systemd/system/captain-hook-canary.servce</code>,
+and activate the startup services:</p>
+<div class="codehilite"><pre><span></span>sudo systemctl enable pod-webhooks.service
 
 sudo systemctl enable captain-hook-canary.service
 </pre></div>
 
 
-<p>Now you can start/stop the service with:</p>
-<div class="codehilite"><pre><span></span>sudo systemctl (start|stop) dockerpod-webhooks.service
+<p>Now you can start/stop the services with:</p>
+<div class="codehilite"><pre><span></span>sudo systemctl (start|stop) pod-webhooks.service
 
 sudo systemctl (start|stop) captain-hook-canary.service
 </pre></div>
@@ -436,11 +479,6 @@ sudo systemctl (start|stop) captain-hook-canary.service
 <p>As mentioned above, these services should be stopped before
 doing a <code>docker-compose stop</code> or a <code>docker-compose up --build</code>
 to keep the pod from respawning in the middle of the task.</p>
-<p>Stop using:</p>
-<div class="codehilite"><pre><span></span>sudo systemctl stop dockerpod-webhooks.service
-
-sudo systemctl stop captain-hook-canary.service
-</pre></div>
                 
                   
                 
@@ -461,7 +499,7 @@ sudo systemctl stop captain-hook-canary.service
     <div class="md-footer-nav">
       <nav class="md-footer-nav__inner md-grid">
         
-          <a href="../Running/" title="Running Captain Hook" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+          <a href="../running/" title="Running Captain Hook" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
             <div class="md-flex__cell md-flex__cell--shrink">
               <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
             </div>
@@ -476,7 +514,7 @@ sudo systemctl stop captain-hook-canary.service
           </a>
         
         
-          <a href="../Canary/" title="Captain Hook's Canary" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+          <a href="../canary/" title="Captain Hook's Canary" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
             <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
               <span class="md-flex__ellipsis">
                 <span class="md-footer-nav__direction">
@@ -518,7 +556,7 @@ sudo systemctl stop captain-hook-canary.service
     
       <script src="../assets/javascripts/application.e72fd936.js"></script>
       
-      <script>app.initialize({version:"1.0",url:{base:".."}})</script>
+      <script>app.initialize({version:"1.0.4",url:{base:".."}})</script>
       
         <script src="../search/main.js"></script>
       

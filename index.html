@@ -34,7 +34,7 @@
         <meta name="lang:search.tokenizer" content="[\s\-]+">
       
       <link rel="shortcut icon" href=".">
-      <meta name="generator" content="mkdocs-1.0, mkdocs-material-3.0.3">
+      <meta name="generator" content="mkdocs-1.0.4, mkdocs-material-3.0.3">
     
     
       
@@ -247,6 +247,13 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#initial-setup-of-pages-subdomain" title="Initial Setup of Pages Subdomain" class="md-nav__link">
+    Initial Setup of Pages Subdomain
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#adding-hooks" title="Adding Hooks" class="md-nav__link">
     Adding Hooks
   </a>
@@ -325,7 +332,7 @@
 
 
   <li class="md-nav__item">
-    <a href="Adding/" title="Adding Webhooks" class="md-nav__link">
+    <a href="adding/" title="Adding Webhooks" class="md-nav__link">
       Adding Webhooks
     </a>
   </li>
@@ -337,7 +344,7 @@
 
 
   <li class="md-nav__item">
-    <a href="Running/" title="Running Captain Hook" class="md-nav__link">
+    <a href="running/" title="Running Captain Hook" class="md-nav__link">
       Running Captain Hook
     </a>
   </li>
@@ -349,7 +356,7 @@
 
 
   <li class="md-nav__item">
-    <a href="Services/" title="Captain Hook Startup Services" class="md-nav__link">
+    <a href="services/" title="Captain Hook Startup Services" class="md-nav__link">
       Captain Hook Startup Services
     </a>
   </li>
@@ -361,7 +368,7 @@
 
 
   <li class="md-nav__item">
-    <a href="Canary/" title="Captain Hook's Canary" class="md-nav__link">
+    <a href="canary/" title="Captain Hook's Canary" class="md-nav__link">
       Captain Hook's Canary
     </a>
   </li>
@@ -390,6 +397,13 @@
         <li class="md-nav__item">
   <a href="#links" title="Links" class="md-nav__link">
     Links
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#initial-setup-of-pages-subdomain" title="Initial Setup of Pages Subdomain" class="md-nav__link">
+    Initial Setup of Pages Subdomain
   </a>
   
 </li>
@@ -490,34 +504,47 @@
 <p>See documentation page here: <a href="https://pages.charlesreid1.com/pod-webhooks">https://pages.charlesreid1.com/pod-webhooks</a></p>
 <p>Source code on git.charlesreid1.com: <a href="https://git.charlesreid1.com/docker/pod-webhooks">https://git.charlesreid1.com/docker/pod-webhooks</a></p>
 <p>Source code on github.com: <a href="https://github.com/charlesreid1-docker/pod-webhooks">https://github.com/charlesreid1-docker/pod-webhooks</a></p>
+<h2 id="initial-setup-of-pages-subdomain">Initial Setup of Pages Subdomain<a class="headerlink" href="#initial-setup-of-pages-subdomain" title="Permanent link">&para;</a></h2>
+<p>The pages.charlesreid1.com subdomain is served from content
+in the directory <code>/www/pages.charlesreid1.com</code>.</p>
+<p>To set this up with pages and sites that should exist already,
+use the set up script at <code>scripts/pages_init_setup.py</code> and
+run it on the pages.charlesreid1.com server:</p>
+<div class="codehilite"><pre><span></span>python scripts/pages_init_setup.py
+</pre></div>
+
+
+<p>This will create the <code>/www/pages.charlesreid1.com/</code> directory
+structure and will clone several repositories to populate it
+with content.</p>
 <h2 id="adding-hooks">Adding Hooks<a class="headerlink" href="#adding-hooks" title="Permanent link">&para;</a></h2>
 <p>Since this is probably the only thing you'll care about once everything
 is actually running... until it breaks.</p>
-<p><a href="Adding/">How To Add A Hook</a></p>
+<p><a href="adding/">How To Add A Hook</a></p>
 <h2 id="how-it-works">How It Works<a class="headerlink" href="#how-it-works" title="Permanent link">&para;</a></h2>
-<p>See <a href="Running/">Running.md</a> for info about running this docker pod.</p>
+<p>See <a href="running/">Running.md</a> for info about running this docker pod.</p>
 <ul>
 <li>Running the Docker Pod from Comand Line</li>
 <li>Workflow for Docker Pod Updates</li>
 </ul>
-<p>See <a href="Services/">Services.md</a> for info about running startup services.</p>
+<p>See <a href="services/">Services.md</a> for info about running startup services.</p>
 <ul>
 <li>Running the Docker Pod as a Startup Service</li>
 <li>Running Captain Hook's Canary (Script)</li>
 </ul>
 <p>Enable/disable service (installs/uninstalls, but does not start):</p>
-<div class="codehilite"><pre><span></span>sudo systemctl (enable|disable) dockerpod-webhooks.service
+<div class="codehilite"><pre><span></span>sudo systemctl (enable|disable) pod-webhooks.service
 sudo systemctl (enable|disable) captain-hook-canary.service
 </pre></div>
 
 
 <p>Start/stop:</p>
-<div class="codehilite"><pre><span></span>sudo systemctl (start|stop) dockerpod-webhooks.service
+<div class="codehilite"><pre><span></span>sudo systemctl (start|stop) pod-webhooks.service
 sudo systemctl (start|stop) captain-hook-canary.service
 </pre></div>
 
 
-<p>See <a href="Canary/">Captain Hook's Canary (Canary.md)</a> for details on the canary script that allows the
+<p>See <a href="canary/">Captain Hook's Canary</a> for details on the canary script that allows the
 webhooks docker pod to trigger itself to be re-loaded when there are new hooks
 added to captain hook.</p>
 <h2 id="volumes-and-files">Volumes and Files<a class="headerlink" href="#volumes-and-files" title="Permanent link">&para;</a></h2>
@@ -536,28 +563,29 @@ been added to Captain Hook for that repo and branch. If so, git.charlesreid1.com
 runs that script. For pages.charlesreid1.com, that's usually just a git pull 
 on the contents of <code>/www/pages.charlesreid1.com/my-page</code>.</p>
 <h3 id="captain-hooks-canary">Captain Hook's Canary<a class="headerlink" href="#captain-hooks-canary" title="Permanent link">&para;</a></h3>
-<p>Captain Hook presents a bit of a paradox: the webhook docker pod needs to be 
-able to tell the host to restart the webhook docker pod when changes are pushed
-to Captain Hook itself.</p>
-<p>This is done by Captain Hook's Canary. This is a script that checks every 10 seconds
-for a trigger file in a directory mounted between the host and container. If the 
-trigger file is present, the host will update its copy of Captain Hook,
+<p>Captain Hook presents a bit of a paradox: what happens when Captain Hook installs
+a hook for itself, and detects that Captain Hook itself has changed?</p>
+<p>In this case, the webhooks docker pod needs to be able to tell the host machine 
+to restart the webhooks docker pod.</p>
+<p>This is done by Captain Hook's Canary. This is a service script that checks every 
+10 seconds for a trigger file in a directory mounted between the host and container. 
+If the trigger file is present, the host will update its copy of Captain Hook,
 then restart the webhooks-subdomains docker pod.</p>
-<p>As per the <a href="https://git.charlesreid1.com/dotfiles/debian/src/branch/master/dotfiles/blackbeard_scripts"><code>blackbeard_scripts</code></a>
-directory of <a href="https://git.charlesreid1.com/dotfiles/debian">dotfiles/debian</a>,
+<p>As per the <a href="https://git.charlesreid1.com/dotfiles/debian">dotfiles/debian</a> repo,
 the <code>captain_hook_canary.sh</code> canary will restart the webhooks docker pod if it 
-detects the file:</p>
+detects the presence following file:</p>
 <div class="codehilite"><pre><span></span>/tmp/triggers/push-b-captain-hook-master
 </pre></div>
 
 
-<p>(The canary script will clean up this file.)</p>
-<p>Now a hook can be added to Captain Hook that will be run when there is a push event
+<p>(The canary script will remove this file once it has restarted the webhooks docker pod.)</p>
+<p>Now, a hook can be added to Captain Hook that will be run when there is a push event
 on the master branch of <a href="https://git.charlesreid1.com/bots/b-captain-hook">bots/b-captain-hook</a>.
 By creating a hook named <code>push-b-captain-hook-master</code> in the
-<code>hooks/</code> directory of captain hook that runs a simple <code>touch</code> command,
-this webhook can trigger the script which triggers a restart of the
-docker pod.</p>
+<code>hooks/</code> directory of Captain Hook, and having it simply run
+<code>touch /tmp/triggers/push-b-captain-hook-master</code>,
+this webhook can trigger the Captain Hook's Canary service script, 
+which triggers a restart of the webhooks docker pod.</p>
 <p>Code: <a href="https://git.charlesreid1.com/bots/b-captain-hook/src/branch/master/hooks/push-b-captain-hook-master">https://git.charlesreid1.com/bots/b-captain-hook/src/branch/master/hooks/push-b-captain-hook-master</a></p>
 <h2 id="network">Network<a class="headerlink" href="#network" title="Permanent link">&para;</a></h2>
 <p>The <code>d-subodomains-nginx</code> container opens different ports for different
@@ -570,14 +598,29 @@ on git.charlesreid1.com for the nginx reverse proxy configuration.</p>
 from git.charlesreid1.com (gitea) web hooks. These web hooks must have 
 the correct secret or the trigger will be ignored.</p>
 <h2 id="servers">Servers<a class="headerlink" href="#servers" title="Permanent link">&para;</a></h2>
-<p>This pod runs on blackbeard.</p>
-<p>The nginx service is reverse-proxied HTTP with krash,
-and accessible at ports 7777+ and up.</p>
-<p>The Captain Hook webhook server is also reverse-proxied HTTP.
-The krash nginx server will handle all traffic to 
-<a href="https://hooks.charlesreid1.com">https://hooks.charlesreid1.com</a> except URLs prefixed
-with <code>webhook</code>, which are forwarded on to Captain Hook
-on port 5000.</p>
+<p><a href="https://pages.charlesreid1.com/pod-webhooks/">pod-webhooks</a> 
+runs on a virtual server somewhere.</p>
+<p>This pod's nginx service provides a backend that is 
+reverse-proxied by the machine running 
+<a href="https://pages.charlesreid1.com/pod-charlesreid1">pod-charlesreid1</a>
+(and the whole <a href="https://charlesreid1.com">https://charlesreid1.com</a> frontend).
+It opens ports 7777+ and up (one per subdomain).</p>
+<p>The <a href="https://pages.charlesreid1.com/pod-charlesreid1">pod-charlesreid1</a>
+docker pod (actually the 
+<a href="https://pages.charlesreid1.com/d-nginx-charlesreid1/">d-nginx-charlesreid1</a>
+submodule in that pod) contains the nginx 
+config files that control the reverse proxy
+behavior of <a href="https://charlesreid1.com">https://charlesreid1.com</a>.</p>
+<p>Like the nginx service in this webhooks pod, the Captain Hook
+webhook service is also reverse-proxied by the main nginx frontend
+running <a href="https://charlesreid1.com">https://charlesreid1.com</a> with the 
+<a href="https://pages.charlesreid1.com/pod-charlesreid1">pod-charlesreid1</a>
+docker pod. If a URL request for <a href="https://hooks.charlesreid1.com">https://hooks.charlesreid1.com</a>
+is received by the <a href="https://charlesreid1.com">https://charlesreid1.com</a> server,
+it is forwarded to the machine running the <a href="https://git.charlesreid1.com/pod-webhooks">pod-webhooks</a>
+docker pod, which decides whether it is a POST request
+(that should be sent to this pod's Captain Hook) or a GET request
+(that should be sent to this pod's nginx).</p>
                 
                   
                 
@@ -599,7 +642,7 @@ on port 5000.</p>
       <nav class="md-footer-nav__inner md-grid">
         
         
-          <a href="Adding/" title="Adding Webhooks" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+          <a href="adding/" title="Adding Webhooks" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
             <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
               <span class="md-flex__ellipsis">
                 <span class="md-footer-nav__direction">
@@ -641,7 +684,7 @@ on port 5000.</p>
     
       <script src="assets/javascripts/application.e72fd936.js"></script>
       
-      <script>app.initialize({version:"1.0",url:{base:"."}})</script>
+      <script>app.initialize({version:"1.0.4",url:{base:"."}})</script>
       
         <script src="search/main.js"></script>
       
