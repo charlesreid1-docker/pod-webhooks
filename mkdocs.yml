@@ -21,11 +21,11 @@ theme:
     text: 'Roboto'
     code: 'Roboto Mono'
 nav:
-  - Home: 'index.md'
-  - Adding Webhooks: 'Adding.md'
-  - Running Captain Hook: 'Running.md'
-  - Captain Hook Startup Services: 'Services.md'
-  - Captain Hook's Canary: 'Canary.md'
+  - "Home": "index.md"
+  - "Adding Webhooks": "adding.md"
+  - "Running Captain Hook": "running.md"
+  - "Captain Hook Startup Services": "services.md"
+  - "Captain Hook's Canary": "canary.md"
 
 # Extensions
 markdown_extensions:
@@ -34,7 +34,5 @@ markdown_extensions:
       guess_lang: false
   - toc:
       permalink: true
-
-
 
 strict: true
