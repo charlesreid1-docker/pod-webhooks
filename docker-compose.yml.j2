@@ -13,8 +13,8 @@ services:
     logging:
       driver: "json-file"
       options:
-        max-size: 1m
-        max-file: 10
+        max-size: "1m"
+        max-file: "10"
     ports:
       - "7777:7777"
       - "7778:7778"
@@ -33,8 +33,8 @@ services:
     logging:
       driver: "json-file"
       options:
-        max-size: 1m
-        max-file: 10
+        max-size: "1m"
+        max-file: "10"
     ports:
       - "5000:5000"
 
