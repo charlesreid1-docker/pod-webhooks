@@ -1,0 +1,40 @@
+version: "3.3"
+services:
+
+  stormy_nginx_subs:
+    restart: always
+    image: nginx
+    command: /bin/bash -c "nginx -g 'daemon off;'"
+    volumes:
+      - "./d-nginx-subdomains/conf.d:/etc/nginx/conf.d"
+      - "/www/pages.{{ server_name_default }}/htdocs:/www/pages.{{ server_name_default }}/htdocs:ro"
+      - "/www/hooks.{{ server_name_default }}/htdocs:/www/hooks.{{ server_name_default }}/htdocs:ro"
+      - "/www/bots.{{ server_name_default }}/htdocs:/www/bots.{{ server_name_default }}/htdocs:ro"
+    logging:
+      driver: "json-file"
+      options:
+        max-size: 1m
+        max-file: 10
+    ports:
+      - "7777:7777"
+      - "7778:7778"
+      - "7779:7779"
+
+  stormy_captain_hook:
+    restart: always
+    build: b-captain-hook
+    volumes:
+      - "/www/pages.{{ server_name_default }}:/www/pages.{{ server_name_default }}"
+      - "/www/hooks.{{ server_name_default }}:/www/hooks.{{ server_name_default }}"
+      - "/www/bots.{{ server_name_default }}:/www/bots.{{ server_name_default }}"
+      - "/tmp/triggers:/tmp/triggers"
+      - "./b-captain-hook/config.json:/app/config.json"
+      - "./b-captain-hook/hooks:/app/hooks"
+    logging:
+      driver: "json-file"
+      options:
+        max-size: 1m
+        max-file: 10
+    ports:
+      - "5000:5000"
+
