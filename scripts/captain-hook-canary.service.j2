@@ -1,0 +1,12 @@
+[Unit]
+Description=captain hook canary script
+Requires=dockerpod-webhooks.service
+After=dockerpod-webhooks.service
+
+[Service]
+Restart=always
+ExecStart={{ webhooks_install_dir }}/scripts/captain_hook_canary.sh
+ExecStop=/usr/bin/pgrep -f captain_hook_canary | /usr/bin/xargs /bin/kill
+
+[Install]
+WantedBy=default.target
