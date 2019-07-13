@@ -1,3 +1,4 @@
 #mkdocs
 site/
 docker-compose.yml
+scripts/captain_hook_canary.sh
