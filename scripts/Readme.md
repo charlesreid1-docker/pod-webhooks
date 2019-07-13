@@ -1,24 +1,24 @@
-# dockerpod-webhooks scripts
+# pod-webhooks scripts
 
-Copy this `dockerpod-webhooks.service` service script to 
-`/etc/systemd/system/dockerpod-webhooks.service`:
+Copy this `pod-webhooks.service` service script to 
+`/etc/systemd/system/pod-webhooks.service`:
 
 ```
-sudo cp dockerpod-webhooks.service /etc/systemd/system/dockerpod-webhooks.service
+sudo cp pod-webhooks.service /etc/systemd/system/pod-webhooks.service
 ```
 
 Enable/disable the service:
 
 ```
-sudo systemctl enable dockerpod-webhooks
-sudo systemctl disable dockerpod-webhooks
+sudo systemctl enable pod-webhooks
+sudo systemctl disable pod-webhooks
 ```
 
 Start/restart/stop the service:
 
 ```
-sudo systemctl start dockerpod-webhooks
-sudo systemctl restart dockerpod-webhooks
-sudo systemctl stop dockerpod-webhooks
+sudo systemctl start pod-webhooks
+sudo systemctl restart pod-webhooks
+sudo systemctl stop pod-webhooks
 ```
 
