@@ -16,11 +16,11 @@ for sub, url, pth in zip(subs,urls,pths):
     subprocess.call(['mkdir','-p',pth])
 
     # Construct clone command
-    workdir = os.path.join(pth,"htdocs",name)
-    gitdir = os.path.join(pth,"git.%s"%(name))
+    workdir = os.path.join(pth,"htdocs",sub)
+    gitdir = os.path.join(pth,"git.%s"%(sub))
     clonecmd = ['git','clone','--separate-git-dir=%s'%(gitdir),'-b','gh-pages',url,workdir]
 
-    print("About to run the command:\n")
+    print("About to clone the submodule %s using command:\n"%(sub))
     print("    $ " + " ".join(clonecmd))
     print("\n")
 
