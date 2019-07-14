@@ -37,4 +37,6 @@ services:
         max-file: "10"
     ports:
       - "5000:5000"
+    depends_on:
+      - stormy_nginx_subs
 
