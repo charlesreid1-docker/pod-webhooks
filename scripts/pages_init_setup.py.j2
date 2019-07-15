@@ -2,12 +2,22 @@
 import subprocess
 import os
 
-# Run a series of git clone commands to set up
-# all the pages that should already exist in
-# /www/pages.charlesreid1.com
-#
-# gh-pages branches only
+"""
+Pages Initial Setup
 
+This script sets up the initial pages.charlesreid1.XYZ
+folder structure and checks out all pages that should
+be present initially at pages.charlesreid1.XYZ.
+
+This clones stuff to /www/pages.charlesreid1.XYZ/htdocs
+"""
+
+SERVER_NAME_DEFAULT = '{{ server_name_default }}'
+USERNAME = '{{ username }}'
+
+
+
+# Repos must have a gh-pages branch
 repo_names = '''bots/b-apollo
 bots/b-captain-hook
 bots/b-ginsberg
@@ -44,7 +54,7 @@ charlesreid1/wisko-manual'''.split('\n')
 repo_urls = ['https://git.charlesreid1.com/%s.git'%(j) for j in repo_names]
 
 root = '/www'
-pages = 'pages.charlesreid1.com'
+pages = 'pages.%s'%(SERVER_NAME_DEFAULT)
 basedir = os.path.join(root,pages)
 
 subprocess.call(['mkdir','-p',basedir])
@@ -59,22 +69,38 @@ for name,url in zip(repo_names,repo_urls):
     # .git dir:     /www/pages.charlesreid1.com/git.project
     # htdocs dir:     /www/pages.charlesreid1.com/htdocs/project
     
+    # Step 1: clone
+    # Construct the clone command to set up
+    # live htdocs directory for this project
+
     workdir = os.path.join(basedir,"htdocs",name)
     gitdir = os.path.join(basedir,"git.%s"%(name))
     
     # clone
     mkdircmd = ["mkdir","-p",basedir]
-    clonecmd = ["git","clone","--separate-git-dir=%s"%(gitdir),"-b","gh-pages",url,workdir]
-    print("About to run the command:\n")
+    clonecmd = ["git","clone",
+                "--separate-git-dir=%s"%(gitdir),
+                "-b","gh-pages",
+                url,workdir]
+
+    print("About to clone %s using command:\n"%(name))
     print("    $ " + " ".join(clonecmd))
     print("\n")
     try:
         p = subprocess.Popen(clonecmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     except:
-        print("Something went wrong. Output:")
-        print(p.stdout.readline())
-        print(p.stderr.readline())
+        msg = "Something went wrong with the clone command. Output:"
+        msg += "\n"
+        msg += p.stdout.readline()
+        msg += "\n"
+        msg += p.stderr.readline()
+        print(msg)
     finally:
-        print("Done. Next command...")
+        print("Done.")
 
+# Step 2: chown everybody
+# Construct chown command
+chowncmd = ['chown','-R',
+            USERNAME+":"+USERNAME,
+            basedir]
 

@@ -1,4 +1,13 @@
 #mkdocs
 site/
 docker-compose.yml
+
+# ignore scripts generated from templates
+scripts/pages_init_setup.py
+scripts/subdomains_init_setup.py
+
+scripts/captain-hook-canary.service
 scripts/captain_hook_canary.sh
+scripts/captain_hook_pull_host.py
+
+scripts/pod-webhooks.service
