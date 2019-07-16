@@ -7,9 +7,9 @@ services:
     command: /bin/bash -c "nginx -g 'daemon off;'"
     volumes:
       - "./d-nginx-subdomains/conf.d:/etc/nginx/conf.d"
-      - "/www/pages.charlesreid1.com/htdocs:/www/pages.charlesreid1.com/htdocs:ro"
-      - "/www/hooks.charlesreid1.com/htdocs:/www/hooks.charlesreid1.com/htdocs:ro"
-      - "/www/bots.charlesreid1.com/htdocs:/www/bots.charlesreid1.com/htdocs:ro"
+      - "/www/pages.charlesreid1.red/htdocs:/www/pages.charlesreid1.red/htdocs:ro"
+      - "/www/hooks.charlesreid1.red/htdocs:/www/hooks.charlesreid1.red/htdocs:ro"
+      - "/www/bots.charlesreid1.red/htdocs:/www/bots.charlesreid1.red/htdocs:ro"
     logging:
       driver: "json-file"
       options:
@@ -24,9 +24,9 @@ services:
     restart: always
     build: b-captain-hook
     volumes:
-      - "/www/pages.charlesreid1.com:/www/pages.charlesreid1.com"
-      - "/www/hooks.charlesreid1.com:/www/hooks.charlesreid1.com"
-      - "/www/bots.charlesreid1.com:/www/bots.charlesreid1.com"
+      - "/www/pages.charlesreid1.red:/www/pages.charlesreid1.red"
+      - "/www/hooks.charlesreid1.red:/www/hooks.charlesreid1.red"
+      - "/www/bots.charlesreid1.red:/www/bots.charlesreid1.red"
       - "/tmp/triggers:/tmp/triggers"
       - "./b-captain-hook/config.json:/app/config.json"
       - "./b-captain-hook/hooks:/app/hooks"
@@ -37,4 +37,6 @@ services:
         max-file: "10"
     ports:
       - "5000:5000"
+    depends_on:
+      - stormy_nginx_subs
 
