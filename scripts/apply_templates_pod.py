@@ -33,7 +33,9 @@ OUTDIR = 'output'
 OVERWRITE = True
 
 # Template variables
-TV = {'webhooks_install_dir' : '/home/charles/pod-webhooks' }
+TV = {
+        'webhooks_install_dir' : '/home/charles/pod-webhooks' 
+}
 
 
 
@@ -54,7 +56,7 @@ def apply_templates(template_dir, output_dir, template_vars, overwrite=False):
     env = Environment(loader=FileSystemLoader('.'))
 
     # Render templates
-    template_files = glob.glob('captain*.j2')
+    template_files = glob.glob('*.service.j2')
     render_files = [re.sub('\.j2','',s) for s in template_files]
 
     for rfile,tfile in zip(render_files,template_files):
