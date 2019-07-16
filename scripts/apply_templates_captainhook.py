@@ -37,8 +37,9 @@ OVERWRITE = True
 
 # Template variables
 TV = {
-        'server_name_default':  'charlesreid1.com',
-        'username':             'charles'
+        'server_name_default':  'charlesreid1.red',
+        'username':             'charles',
+        'webhooks_install_dir' : '/home/charles/pod-webhooks' 
 }
 
 
