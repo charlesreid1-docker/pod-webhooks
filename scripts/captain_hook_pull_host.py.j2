@@ -17,8 +17,8 @@ of Captain Hook running on the host, and
 restart the container pod.
 """
 
-work_dir = os.path.join('{{ webhooks_install_dir }}','b-captain-hook')
 pod_dir = '{{ webhooks_install_dir }}'
+work_dir = os.path.join(pod_dir,'b-captain-hook')
 
 from datetime import datetime
 d = datetime.now().strftime('%Y-m-%d')
