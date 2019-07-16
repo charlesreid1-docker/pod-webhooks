@@ -1,0 +1,94 @@
+#!/usr/bin/env python3
+import subprocess
+import os
+import sys
+
+"""
+Subdomains Initial Setup
+
+This script sets up the initial folder structure
+for the charlesreid1.com subdomains and their content.
+"""
+
+SERVER_NAME_DEFAULT = '{{ server_name_default }}'
+USERNAME = '{{ username }}'
+
+
+
+# Each subdomain page has an htdocs dir at
+#
+# /www/SUBDOMAIN.charlesreid1.XYZ/htdocs
+# 
+# and a .git directory at
+#
+# /www/SUBDOMAIN.charlesreid1.XYZ/git.SUBDOMAIN.charlesreid1.XYZ
+
+# Name of all subdomains to set up
+sub_names = ['bots','pages','hooks']
+subs = [n+'.'+SERVER_NAME_DEFAULT for n in sub_names]
+
+# Use git.charlesreid1.com
+# (Note we have to hard-code the suffix 
+#  charlesreid1.com b/c that is the name
+#  of the repo for ALL subdomains)
+urls = ['https://git.charlesreid1.com/charlesreid1/%s.charlesreid1.com'%(n) for n in sub_names]
+# 
+# Use github.com (alternative)
+# (Note we have to hard-code the suffix charlesreid1.com)
+#urls = ['https://github.com/charlesreid1-docker/%s.charlesreid1.com'%(n) for n in sub_names]
+
+# Base directory for all htdocs folders
+pth = '/www'
+
+# Create the base directory
+subprocess.call(['mkdir','-p',pth])
+
+# Step 1: clone htdocs dir for each subdomain
+for sub, url in zip(subs,urls):
+
+    # Construct the clone command for the live
+    # htdocs directory for this subdomain
+    clonepth = os.path.join(pth,sub,'htdocs')
+    dotgitpth = os.path.join(pth,sub,'git.%s'%(sub))
+    clonecmd = ['git','clone',
+                '--separate-git-dir=%s'%(dotgitpth),
+                '-b','gh-pages',
+                url,clonepth]
+
+    print("About to clone htdocs dir for %s using command:\n"%(sub))
+    print("    $ " + " ".join(clonecmd))
+    print("\n")
+
+    try:
+        p = subprocess.Popen(clonecmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    except:
+        msg = "Something went wrong with the htdocs clone command. Output:"
+        msg += "\n"
+        msg += p.stdout.readline()
+        msg += "\n"
+        msg += p.stderr.readline()
+        print(msg)
+    finally:
+        print("Done.")
+
+
+# Step 2: chown
+# Construct chown command to chown everybody
+chowncmd = ['chown','-R',USERNAME+":"+USERNAME,pth]
+
+print("About to change owner of %s using command:\n"%(pth))
+print("    $ " + " ".join(chowncmd))
+print("\n")
+
+try:
+    p = subprocess.Popen(chowncmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+except:
+    msg = "Something went wrong with the chown command. Output:"
+    msg += "\n"
+    msg += p.stdout.readline()
+    msg += "\n"
+    msg += p.stderr.readline()
+    print(msg)
+finally:
+    print("Done.")
+
