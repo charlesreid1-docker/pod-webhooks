@@ -44,12 +44,12 @@ pth = '/www'
 subprocess.call(['mkdir','-p',pth])
 
 # Step 1: clone htdocs dir for each subdomain
-for sub, url in zip(subs,urls):
+for subname, sub, url in zip(sub_names,subs,urls):
 
     # Construct the clone command for the live
     # htdocs directory for this subdomain
     clonepth = os.path.join(pth,sub,'htdocs')
-    dotgitpth = os.path.join(pth,sub,'git.%s'%(sub))
+    dotgitpth = os.path.join(pth,sub,'git.%s'%(subname))
     clonecmd = ['git','clone',
                 '--separate-git-dir=%s'%(dotgitpth),
                 '-b','gh-pages',
