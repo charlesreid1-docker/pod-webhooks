@@ -92,7 +92,7 @@ for name,url in zip(repo_names,repo_urls):
         pullcmd = ['git',
                    '-C', basedir,
                    '--git-dir=%s'%(dotgitdir),
-                   '--work-tree=%s'%(htdocsdir),
+                   '--work-tree=%s'%(workdir),
                    'pull','origin','gh-pages']
 
         print("About to pull gh-pages branch for %s using command:\n"%(name))
