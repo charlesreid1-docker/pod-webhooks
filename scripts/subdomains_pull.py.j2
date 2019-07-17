@@ -4,7 +4,7 @@ import os
 import sys
 
 """
-Subdomains Initial Setup
+Subdomains Pull Script
 
 This script sets up the initial folder structure
 for the charlesreid1.com subdomains and their content.
@@ -46,23 +46,30 @@ subprocess.call(['mkdir','-p',pth])
 # Step 1: clone htdocs dir for each subdomain
 for sub, url in zip(subs,urls):
 
-    # Construct the clone command for the live
-    # htdocs directory for this subdomain
-    clonepth = os.path.join(pth,sub,'htdocs')
-    dotgitpth = os.path.join(pth,sub,'git.%s'%(sub))
-    clonecmd = ['git','clone',
-                '--separate-git-dir=%s'%(dotgitpth),
-                '-b','gh-pages',
-                url,clonepth]
+    # Step 1: pull
+    # Construct the git pull command to update
+    # the live htdocs directory for this project
 
-    print("About to clone htdocs dir for %s using command:\n"%(sub))
+    htdocsdir = os.path.join(basedir,"htdocs")
+    gitdir = os.path.join(basedir,"git.%s"%(name))
+
+    # git pull, respecting the
+    # unusual .git/repo folder layout
+    pullcmd = ['git',
+               '-C', basedir,
+               '--git-dir=%s'%(dotgitdir),
+               '--work-tree=%s'%(htdocsdir),
+               'pull','origin','gh-pages']
+
+
+    print("About to pull htdocs dir for %s using command:\n"%(sub))
     print("    $ " + " ".join(clonecmd))
     print("\n")
 
     try:
         p = subprocess.Popen(clonecmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     except:
-        msg = "Something went wrong with the htdocs clone command. Output:"
+        msg = "Something went wrong with the htdocs pull command. Output:"
         msg += "\n"
         msg += p.stdout.readline()
         msg += "\n"

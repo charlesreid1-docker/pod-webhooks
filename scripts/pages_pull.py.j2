@@ -68,20 +68,9 @@ for name,url in zip(repo_names,repo_urls):
     # .git dir:     /www/pages.charlesreid1.com/git.project
     # htdocs dir:     /www/pages.charlesreid1.com/htdocs/project
     
-    # Step 1: clone
-    # Construct the clone command to set up
-    # live htdocs directory for this project
-
-    ### workdir = os.path.join(basedir,"htdocs",name)
-    ### gitdir = os.path.join(basedir,"git.%s"%(name))
-    
-    ### # clone
-    ### mkdircmd = ["mkdir","-p",basedir]
-    ### clonecmd = ["git","clone",
-    ###             "--separate-git-dir=%s"%(gitdir),
-    ###             "-b","gh-pages",
-    ###             url,workdir]
-
+    # Step 1: pull
+    # Construct the git pull command to update
+    # the live htdocs directory for this project
 
     htdocsdir = os.path.join(basedir,"htdocs")
     gitdir = os.path.join(basedir,"git.%s"%(name))
