@@ -58,7 +58,7 @@ def apply_templates(template_dir, output_dir, template_vars, overwrite=False):
     env = Environment(loader=FileSystemLoader('.'))
 
     # Render templates
-    template_files = glob.glob('*_setup.py.j2')
+    template_files = glob.glob('*_setup.py.j2') + glob.glob('*_pull.py.j2')
     render_files = [re.sub('\.j2','',s) for s in template_files]
 
     for rfile,tfile in zip(render_files,template_files):
