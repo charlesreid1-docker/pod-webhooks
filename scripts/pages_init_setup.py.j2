@@ -27,6 +27,7 @@ repo_names = '''bots/b-apollo
 bots/b-captain-hook
 bots/b-ginsberg
 bots/b-milton
+bots/uncle-archie
 bots/boring-mind-machine
 docker/d-gitea
 docker/d-mediawiki
@@ -49,11 +50,9 @@ charlesreid1/how-do-i-snakemake
 docker/pod-bots
 docker/pod-charlesreid1
 docker/pod-webhooks
-bots/rainbow-mind-machine
 bots/russian-rainbow-mind-machine
 charlesreid1/scurvy-knave-theme
 charlesreid1/translate-yer-docs
-charlesreid1/uncle-archie
 charlesreid1/wisko-manual'''.split('\n')
 
 repo_urls = ['https://git.charlesreid1.com/%s.git'%(j) for j in repo_names]
@@ -96,11 +95,16 @@ for name,url in zip(repo_names,repo_urls):
         print("    $ " + " ".join(clonecmd))
         print("\n")
     
-        for loo in execute(clonecmd):
-            print("\t> "+loo, end="")
-        print("\n")
+        try:
+            for loo in execute(clonecmd):
+                print("\t> "+loo, end="")
+            print("\n")
+            print("Done.")
 
-        print("Done.")
+        except subprocess.CalledProcessError:
+            print("Failed on clone command for project %s"%(name))
+            print("Continuing...")
+
 
 
 
@@ -110,7 +114,7 @@ chowncmd = ['chown','-R',
             USERNAME+":"+USERNAME,
             basedir]
 
-print("About to change owner of %s using command:\n"%(pth))
+print("About to change owner of %s using command:\n"%(basedir))
 print("    $ " + " ".join(chowncmd))
 print("\n")
 
@@ -119,5 +123,4 @@ for loo in execute(chowncmd):
 print("\n")
 
 print("Done.")
-
 
