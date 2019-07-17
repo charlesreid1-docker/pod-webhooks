@@ -50,19 +50,25 @@ for subname, sub, url in zip(sub_names,subs,urls):
     # htdocs directory for this subdomain
     clonepth = os.path.join(pth,sub,'htdocs')
     dotgitpth = os.path.join(pth,sub,'git.%s'%(subname))
-    clonecmd = ['git','clone',
-                '--separate-git-dir=%s'%(dotgitpth),
-                '-b','gh-pages',
-                url,clonepth]
 
-    print("About to clone htdocs dir for %s using command:\n"%(sub))
-    print("    $ " + " ".join(clonecmd))
-    print("\n")
+    if os.path.exists(clonepth):
+        print("Git repository has already been cloned, %s already exists on disk!"%(clonepth))
 
-    for loo in execute(clonecmd):
-        print("\t> "+loo, end="")
-    print("\n")
-    print("Done.")
+    else:
+
+        clonecmd = ['git','clone',
+                    '--separate-git-dir=%s'%(dotgitpth),
+                    '-b','gh-pages',
+                    url,clonepth]
+
+        print("About to clone htdocs dir for %s using command:\n"%(sub))
+        print("    $ " + " ".join(clonecmd))
+        print("\n")
+
+        for loo in execute(clonecmd):
+            print("\t> "+loo, end="")
+        print("\n")
+        print("Done.")
 
 
 
