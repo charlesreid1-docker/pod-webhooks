@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import subprocess
 import os
+from executioner import execute
 
 """
 Pages Initial Setup
@@ -9,7 +10,11 @@ This script sets up the initial pages.charlesreid1.XYZ
 folder structure and checks out all pages that should
 be present initially at pages.charlesreid1.XYZ.
 
-This clones stuff to /www/pages.charlesreid1.XYZ/htdocs
+This clones the page for a given project to
+
+/www/pages.charlesreid1.XYZ/htdocs/project-name
+
+(where project = repo)
 """
 
 SERVER_NAME_DEFAULT = '{{ server_name_default }}'
@@ -57,50 +62,62 @@ root = '/www'
 pages = 'pages.%s'%(SERVER_NAME_DEFAULT)
 basedir = os.path.join(root,pages)
 
-subprocess.call(['mkdir','-p',basedir])
+if not os.path.exists(basedir):
+    raise Exception("Error: base directory %s does not exist!"%(basedir))
 
 for name,url in zip(repo_names,repo_urls):
     
-    # ------------------
-    # pages
-    #
     # for a hypothetical repo "project":
     # 
+    # base dir:     /www/pages.charlesreid1.com
     # .git dir:     /www/pages.charlesreid1.com/git.project
-    # htdocs dir:     /www/pages.charlesreid1.com/htdocs/project
+    # htdocs dir:   /www/pages.charlesreid1.com/htdocs/project
     
     # Step 1: clone
     # Construct the clone command to set up
     # live htdocs directory for this project
 
-    workdir = os.path.join(basedir,"htdocs",name)
-    gitdir = os.path.join(basedir,"git.%s"%(name))
-    
-    # clone
-    mkdircmd = ["mkdir","-p",basedir]
-    clonecmd = ["git","clone",
-                "--separate-git-dir=%s"%(gitdir),
-                "-b","gh-pages",
-                url,workdir]
+    repo_owner, repo_name = name.split("/")
 
-    print("About to clone %s using command:\n"%(name))
-    print("    $ " + " ".join(clonecmd))
-    print("\n")
-    try:
-        p = subprocess.Popen(clonecmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    except:
-        msg = "Something went wrong with the clone command. Output:"
-        msg += "\n"
-        msg += p.stdout.readline()
-        msg += "\n"
-        msg += p.stderr.readline()
-        print(msg)
-    finally:
+    clonepth = os.path.join(basedir,"htdocs",repo_name)
+    dotgitpth = os.path.join(basedir,"git.%s"%(repo_name))
+
+    if os.path.exists(clonepth):
+        print("Git repository has already been cloned, %s already exists on disk!"%(clonepth))
+    
+    else:
+
+        clonecmd = ["git","clone",
+                    "--separate-git-dir=%s"%(dotgitpth),
+                    "-b","gh-pages",
+                    url,clonepth]
+    
+        print("About to clone gh-pages branch for %s using command:\n"%(name))
+        print("    $ " + " ".join(clonecmd))
+        print("\n")
+    
+        for loo in execute(clonecmd):
+            print("\t> "+loo, end="")
+        print("\n")
+
         print("Done.")
+
+
 
 # Step 2: chown everybody
 # Construct chown command
 chowncmd = ['chown','-R',
             USERNAME+":"+USERNAME,
             basedir]
+
+print("About to change owner of %s using command:\n"%(pth))
+print("    $ " + " ".join(chowncmd))
+print("\n")
+
+for loo in execute(chowncmd):
+    print("\t> "+loo, end="")
+print("\n")
+
+print("Done.")
+
 
