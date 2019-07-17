@@ -1,5 +1,6 @@
 import os, re, sys
 import glob
+import subprocess
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 
 """
@@ -74,6 +75,9 @@ def apply_templates(template_dir, output_dir, template_vars, overwrite=False):
 
         with open(dest,'w') as f:
             f.write(content)
+
+    x = 'executioner.py'
+    subprocess.call(['cp',x,os.path.join(output_dir,x)])
 
     print("Rendered the following templates:%s\nOutput files:%s\n"%(
             "".join(["\n- "+os.path.join(template_dir,j) for j in template_files]),
