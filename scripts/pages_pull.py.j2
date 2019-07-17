@@ -81,11 +81,11 @@ for name,url in zip(repo_names,repo_urls):
 
     repo_owner, repo_name = name.split("/")
 
-    workpth = os.path.join(basedir,"htdocs",repo_name)
-    dotgitpth = os.path.join(basedir,"git.%s"%(repo_name))
+    workdir = os.path.join(basedir,"htdocs",repo_name)
+    dotgitdir = os.path.join(basedir,"git.%s"%(repo_name))
 
-    if not os.path.exists(workpth):
-        print("Git repository has not yet been cloned, %s does not exist on disk!"%(workpth))
+    if not os.path.exists(workdir):
+        print("Git repository has not yet been cloned, %s does not exist on disk!"%(workdir))
 
     else:
 
@@ -96,17 +96,17 @@ for name,url in zip(repo_names,repo_urls):
                    'pull','origin','gh-pages']
 
         print("About to pull gh-pages branch for %s using command:\n"%(name))
-        print("    $ " + " ".join(clonecmd))
+        print("    $ " + " ".join(pullcmd))
         print("\n")
 
         try:
-            for loo in execute(clonecmd):
+            for loo in execute(pullcmd):
                 print("\t> "+loo, end="")
             print("\n")
             print("Done.")
 
         except subprocess.CalledProcessError:
-            print("Failed on clone command for project %s"%(name))
+            print("Failed on pull command for project %s"%(name))
             print("Continuing...")
 
 
