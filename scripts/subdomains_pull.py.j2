@@ -38,23 +38,24 @@ urls = ['https://git.charlesreid1.com/charlesreid1/%s.charlesreid1.com'%(n) for 
 #urls = ['https://github.com/charlesreid1-docker/%s.charlesreid1.com'%(n) for n in sub_names]
 
 # Base directory for all htdocs folders
-basedir = '/www'
+pth = '/www'
 
 # Create the base directory
-subprocess.call(['mkdir','-p',basedir])
+subprocess.call(['mkdir','-p',pth])
 
 # Step 1: clone htdocs dir for each subdomain
-for sub, url in zip(subs,urls):
+for subname, sub, url in zip(sub_names,subs,urls):
 
     # Step 1: pull
     # Construct the git pull command to update
     # the live htdocs directory for this project
 
+    basedir = os.path.join(pth,sub)
     htdocsdir = os.path.join(basedir,"htdocs")
-    gitdir = os.path.join(basedir,"git.%s"%(name))
+    dotgitdir = os.path.join(basedir,"git.%s"%(subname))
 
     if not os.path.exists(htdocsdir):
-        print("Git repository has not been cloned, %s does not exist on disk!"%(clonepth))
+        print("Git repository has not been cloned, %s does not exist on disk!"%(htdocsdir))
 
     else:
 
@@ -68,10 +69,10 @@ for sub, url in zip(subs,urls):
 
 
         print("About to pull htdocs dir for %s using command:\n"%(sub))
-        print("    $ " + " ".join(clonecmd))
+        print("    $ " + " ".join(pullcmd))
         print("\n")
 
-        for loo in execute(clonecmd):
+        for loo in execute(pullcmd):
             print("\t> "+loo, end="")
         print("\n")
         print("Done.")
