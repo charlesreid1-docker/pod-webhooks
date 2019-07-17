@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 import subprocess
 import os
-import sys
+from executioner import execute
 
 """
 Subdomains Pull Script
@@ -38,10 +38,10 @@ urls = ['https://git.charlesreid1.com/charlesreid1/%s.charlesreid1.com'%(n) for 
 #urls = ['https://github.com/charlesreid1-docker/%s.charlesreid1.com'%(n) for n in sub_names]
 
 # Base directory for all htdocs folders
-pth = '/www'
+basedir = '/www'
 
 # Create the base directory
-subprocess.call(['mkdir','-p',pth])
+subprocess.call(['mkdir','-p',basedir])
 
 # Step 1: clone htdocs dir for each subdomain
 for sub, url in zip(subs,urls):
@@ -53,49 +53,42 @@ for sub, url in zip(subs,urls):
     htdocsdir = os.path.join(basedir,"htdocs")
     gitdir = os.path.join(basedir,"git.%s"%(name))
 
-    # git pull, respecting the
-    # unusual .git/repo folder layout
-    pullcmd = ['git',
-               '-C', basedir,
-               '--git-dir=%s'%(dotgitdir),
-               '--work-tree=%s'%(htdocsdir),
-               'pull','origin','gh-pages']
+    if not os.path.exists(htdocsdir):
+        print("Git repository has not been cloned, %s does not exist on disk!"%(clonepth))
+
+    else:
+
+        # git pull, respecting the
+        # unusual .git/repo folder layout
+        pullcmd = ['git',
+                   '-C', basedir,
+                   '--git-dir=%s'%(dotgitdir),
+                   '--work-tree=%s'%(htdocsdir),
+                   'pull','origin','gh-pages']
 
 
-    print("About to pull htdocs dir for %s using command:\n"%(sub))
-    print("    $ " + " ".join(clonecmd))
-    print("\n")
+        print("About to pull htdocs dir for %s using command:\n"%(sub))
+        print("    $ " + " ".join(clonecmd))
+        print("\n")
 
-    try:
-        p = subprocess.Popen(clonecmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    except:
-        msg = "Something went wrong with the htdocs pull command. Output:"
-        msg += "\n"
-        msg += p.stdout.readline()
-        msg += "\n"
-        msg += p.stderr.readline()
-        print(msg)
-    finally:
+        for loo in execute(clonecmd):
+            print("\t> "+loo, end="")
+        print("\n")
         print("Done.")
+
 
 
 # Step 2: chown
 # Construct chown command to chown everybody
-chowncmd = ['chown','-R',USERNAME+":"+USERNAME,pth]
+chowncmd = ['chown','-R',USERNAME+":"+USERNAME,basedir]
 
-print("About to change owner of %s using command:\n"%(pth))
+print("About to change owner of %s using command:\n"%(basedir))
 print("    $ " + " ".join(chowncmd))
 print("\n")
 
-try:
-    p = subprocess.Popen(chowncmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-except:
-    msg = "Something went wrong with the chown command. Output:"
-    msg += "\n"
-    msg += p.stdout.readline()
-    msg += "\n"
-    msg += p.stderr.readline()
-    print(msg)
-finally:
-    print("Done.")
+for loo in execute(chowncmd):
+    print("\t> "+loo, end="")
+print("\n")
+
+print("Done.")
 
