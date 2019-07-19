@@ -73,7 +73,7 @@ for subname, sub, url in zip(sub_names,subs,urls):
         print("\n")
 
         for loo in execute(pullcmd):
-            print("\t> "+loo, end="")
+            print(loo)
         print("\n")
         print("Done.")
 
@@ -88,7 +88,7 @@ print("    $ " + " ".join(chowncmd))
 print("\n")
 
 for loo in execute(chowncmd):
-    print("\t> "+loo, end="")
+    print(loo)
 print("\n")
 
 print("Done.")

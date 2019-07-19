@@ -97,7 +97,7 @@ for name,url in zip(repo_names,repo_urls):
     
         try:
             for loo in execute(clonecmd):
-                print("\t> "+loo, end="")
+                print(loo)
             print("\n")
             print("Done.")
 
@@ -118,7 +118,7 @@ print("    $ " + " ".join(chowncmd))
 print("\n")
 
 for loo in execute(chowncmd):
-    print("\t> "+loo, end="")
+    print(loo)
 print("\n")
 
 print("Done.")
